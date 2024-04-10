@@ -12,7 +12,7 @@ class Routines(db.Model):
     }
 
 class CustomRoutine(Routines):
-  __tablename__ = 'custom_routines'
+    __tablename__ = 'custom_routines'
 
 #   todos = db.relationship(
 #       'Todo', backref='user',
