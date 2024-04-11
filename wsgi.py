@@ -23,12 +23,6 @@ def initialize():
     with open('megaGymDataset.csv', newline='', encoding='utf8') as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
-            # if row['height_m'] == '':
-            #     row['height_m'] = None
-            # if row['weight_kg'] == '':
-            #     row['weight_kg'] = None
-            # if row['type2'] == '':
-            #     row['type2'] = None
             levels = ["Beginner", "Intermediate", "Expert"]
             levelsNum = levels.index(row["Level"])
             workout = Workouts(workoutName=row["Title"],description=row["Desc"],workoutType=row["Type"],equipment=row["Equipment"],bodyPart=row["BodyPart"],Level=levelsNum+1)
