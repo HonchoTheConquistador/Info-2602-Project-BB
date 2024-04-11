@@ -17,9 +17,9 @@ class CustomRoutine(Routines):
 #   todos = db.relationship(
 #       'Todo', backref='user',
 #       lazy=True)  # sets up a relationship to todos which references User
-  __mapper_args__ = {
+    __mapper_args__ = {
       'polymorphic_identity': 'customRoutine',
-  }
+    }
 
 class FixedRoutine(Routines):
   __tablename__ = 'fixed_routines'

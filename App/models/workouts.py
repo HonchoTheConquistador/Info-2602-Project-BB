@@ -1,20 +1,20 @@
 from App.database import db
 
-Title,Desc,Type,BodyPart,Equipment,Level,Rating,RatingDesc
 
-class Wokrkouts(db.Model):
+class Workouts(db.Model):
     workoutID = db.Column(db.Integer, nullable=False,primary_key=True)
     workoutName = db.Column(db.String(50),nullable = False)
-    description = dv.Column(db.String, nullable=False)
+    description = db.Column(db.String, nullable=False)
     workoutType = db.Column(db.String(30),nullable = False)
+    equipment = db.Column(db.String(30), nullable = False)
     bodypart = db.Column(db.String(20),nullable = False)
     Level = db.Column(db.Integer,nullable = False)
     
-    def __init__(self,workoutID,workoutName,description,workoutType,bodyPart,Level):
-        self.workoutID = workoutID
+    def __init__(self,workoutName,description,workoutType,equipment,bodyPart,Level):
         self.workoutName = workoutName
         self.description = description
         self.workoutType = workoutType
+        self.equipment = equipment
         self.bodypart = bodyPart
         self.Level = Level
 
@@ -23,6 +23,7 @@ class Wokrkouts(db.Model):
             "workoutName" : self.workoutName,
             "description" : self.description,
             "workoutType" : self.workoutType,
+            "equipment" : self.equipment,
             "bodypart" : self.bodypart,
             "level" : self.level
 

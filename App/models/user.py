@@ -9,7 +9,6 @@ class User(db.Model):
 
     def __init__(self, username, password,workoutLevel):
         self.username = username
-        self.email = email
         self.set_password(password)
         self.workoutLevel = workoutLevel
 

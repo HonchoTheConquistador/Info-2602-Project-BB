@@ -1,23 +1,42 @@
 import click, pytest, sys
+import csv
 from flask import Flask
 from flask.cli import with_appcontext, AppGroup
 
 from App.database import db, get_migrate
 from App.main import create_app
 from App.controllers import ( create_user, get_all_users_json, get_all_users )
+from App.models.workouts import Workouts
+
 
 # This commands file allow you to create convenient CLI commands for testing controllers
 
 app = create_app()
 migrate = get_migrate(app)
+    
 
 # This command creates and initializes the database
 @app.cli.command("init", help="Creates and initializes the database")
 def initialize():
     db.drop_all()
     db.create_all()
+    with open('megaGymDataset.csv', newline='', encoding='utf8') as csvfile:
+        reader = csv.DictReader(csvfile)
+        for row in reader:
+            # if row['height_m'] == '':
+            #     row['height_m'] = None
+            # if row['weight_kg'] == '':
+            #     row['weight_kg'] = None
+            # if row['type2'] == '':
+            #     row['type2'] = None
+            levels = ["Beginner", "Intermediate", "Expert"]
+            levelsNum = levels.index(row["Level"])
+            workout = Workouts(workoutName=row["Title"],description=row["Desc"],workoutType=row["Type"],equipment=row["Equipment"],bodyPart=row["BodyPart"],Level=levelsNum+1)
+            db.session.add(workout)
+    db.session.commit()
     create_user('bob', 'bobpass',1)
     print('database intialized')
+
 
 '''
 User Commands
