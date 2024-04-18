@@ -11,6 +11,14 @@ class Routines(db.Model):
       'polymorphic_on': type
     }
 
+    def get_json():
+      return {
+        "routineId" : routineId,
+        "routineName" : routineName,
+        "difficulty" : difficulty,
+        "dateCreated" : dateCreated
+      }
+
 class CustomRoutine(Routines):
     __tablename__ = 'custom_routines'
 

@@ -25,6 +25,6 @@ class Workouts(db.Model):
             "workoutType" : self.workoutType,
             "equipment" : self.equipment,
             "bodypart" : self.bodypart,
-            "level" : self.level
+            "level" : self.Level
 
         }
