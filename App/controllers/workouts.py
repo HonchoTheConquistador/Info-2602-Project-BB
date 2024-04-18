@@ -22,11 +22,7 @@ def get_workout_id(workout_id):
     return Workouts.query.get(workout_id)
 
 def get_all_workouts_json():
-    workout_list = Workouts.query.all()
-    if not workout_list:
-        return []
-    workouts = [workout.get_json() for workout in workout_list]
-    return workouts
+    return Workouts.query.all()
 
 def get_workout_difficulty(difficulty):
     return Workouts.query.filter_by(Level=difficulty).all()

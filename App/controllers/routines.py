@@ -1,4 +1,4 @@
-from App.models import Routines
+from App.models import Routines, FixedRoutine, CustomRoutine
 from App.database import db
 
 #finds a specified routine by name

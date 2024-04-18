@@ -5,9 +5,17 @@ from flask.cli import with_appcontext, AppGroup
 
 from App.database import db, get_migrate
 from App.main import create_app
-from App.controllers import (create_user, get_all_users_json, get_all_users, get_workout_difficulty, get_all_workouts_json, get_workout_equipment, get_workout_body_part, get_workout_type, search_workouts)
-from App.models.workouts import Workouts
 
+from App.controllers import (
+    create_user, get_all_users_json, 
+    get_all_users, get_workout_difficulty, 
+    get_all_workouts_json, get_workout_equipment, 
+    get_workout_body_part, get_workout_type, 
+    search_workouts,get_all_routines)
+
+from App.models.workouts import Workouts
+from App.models.routines import Routines, FixedRoutine
+from App.models.routineworkouts import RoutineWorkouts
 
 # This commands file allow you to create convenient CLI commands for testing controllers
 
@@ -28,18 +36,25 @@ def initialize():
             workout = Workouts(workoutName=row["Title"],description=row["Desc"],workoutType=row["Type"],equipment=row["Equipment"],bodyPart=row["BodyPart"],Level=levelsNum+1)
             db.session.add(workout)
     db.session.commit()
-    with open('megaGymDataset.csv', newline='', encoding='utf8') as csvfile:
+    with open('fixedRoutines.csv', newline='', encoding='utf8') as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
             routineDifficulty = 0.0 #keeps track of the difficulty of the routine based on exercises       
             name = row["Name"]
             routineType = row["RoutineType"]
             dateCreated = row["DateCreated"]
-            workoutslist = list(row["Workouts"])
-            for workout in workoutslist:
-                workouts = 
-                pass
+            workoutslist = row["Workouts"].split(",")
             routine = FixedRoutine(routineType,name,routineDifficulty,dateCreated)
+            db.session.add(routine)
+            # not sure if i have to commit it to the db first, will test 
+            for i in workoutslist:
+                workout = Workouts.query.filter_by(workoutID =int(i)).first()
+                routineDifficulty = routineDifficulty + workout.Level
+                # add routine workout stuff here 
+                routineWorkout = RoutineWorkouts(routine.routineId,workout.workoutID)
+                db.session.add(routineWorkout)
+            routineDifficulty = routineDifficulty/len(workoutslist)
+            routine.difficulty = routineDifficulty
             db.session.add(routine)
 
     db.session.commit()
@@ -154,3 +169,19 @@ def user_tests_command(type):
     
 
 app.cli.add_command(test)
+
+
+##########################################
+
+routines = AppGroup('routines' , help='Tests routine commands')
+
+@routines.command("get_all", help="Shows all Routines")
+def show_all_routines():
+    routines = get_all_routines()
+    for routine in routines:
+        print(routine.get_json())
+
+
+app.cli.add_command(routines)
+
+##########################################
