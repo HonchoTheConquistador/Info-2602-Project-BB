@@ -1,3 +1,3 @@
-,Name,Workouts,DateCreated
-0,Chest Blast,[916,923,924],12/2/2022
-1,Leg Day Killa,[1212,1215,1292,893],13/5/2023
+,Name,RoutineType,Workouts,DateCreated
+0,Chest Blast,Chest,[916,923,924],12/2/2022
+1,Leg Day Killa,Legs,[1212,1215,1292,893],13/5/2023

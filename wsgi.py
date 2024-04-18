@@ -5,7 +5,7 @@ from flask.cli import with_appcontext, AppGroup
 
 from App.database import db, get_migrate
 from App.main import create_app
-from App.controllers import ( create_user, get_all_users_json, get_all_users)
+from App.controllers import (create_user, get_all_users_json, get_all_users, get_workout_difficulty, get_all_workouts_json, get_workout_equipment, get_workout_body_part, get_workout_type, search_workouts)
 from App.models.workouts import Workouts
 
 
@@ -32,8 +32,14 @@ def initialize():
         reader = csv.DictReader(csvfile)
         for row in reader:
             routineDifficulty = 0.0 #keeps track of the difficulty of the routine based on exercises       
-
-            routine = FixedRoutine()
+            name = row["Name"]
+            routineType = row["RoutineType"]
+            dateCreated = row["DateCreated"]
+            workoutslist = list(row["Workouts"])
+            for workout in workoutslist:
+                workouts = 
+                pass
+            routine = FixedRoutine(routineType,name,routineDifficulty,dateCreated)
             db.session.add(routine)
 
     db.session.commit()
@@ -89,18 +95,20 @@ def get_workout_id_command(id):
 @workouts_cli.command("get_all", help="Get all workouts")
 def get_all_workouts_command():
     workouts = get_all_workouts()
-    print(workouts)
+    for workout in workouts:
+        print(workout.get_json())
 
 @workouts_cli.command("get_difficulty", help="Get workouts by difficulty")
 @click.argument("difficulty")
 def get_workouts_difficulty_command(difficulty):
-    workouts = get_workouts_difficulty(difficulty)
+
+    workouts = get_workout_difficulty(difficulty)
     print(workouts)
 
 @workouts_cli.command("get_equipment", help="Get workouts by equipment")
 @click.argument("equipment")
 def get_workouts_equipment_command(equipment):
-    workouts = get_workouts_equipment(equipment)
+    workouts = get_workout_equipment(equipment)
     print(workouts)
 
 @workouts_cli.command("get_body_part", help="Get workouts by body part")
