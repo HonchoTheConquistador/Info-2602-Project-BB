@@ -205,8 +205,6 @@ def user_tests_command(type):
     
 
 app.cli.add_command(test)
-
-
 ##########################################
 
 routines = AppGroup('routines' , help='Tests routine commands')
