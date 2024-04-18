@@ -3,4 +3,4 @@ from .auth import *
 from .routines import *
 from .routineworkouts import *
 from .userroutines import * 
-from .workouts import *  
+from .workouts import * 
