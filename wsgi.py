@@ -47,11 +47,12 @@ def initialize():
                 routineWorkout = RoutineWorkouts(routine.routineId,workout.workoutID)
                 db.session.add(routineWorkout)
             routineDifficulty = routineDifficulty/len(workoutslist)
-            routine.difficulty = routineDifficulty
+            routine.difficulty = round(routineDifficulty)
             db.session.add(routine)
 
     db.session.commit()
     create_user('bob', 'bobpass',1)
+    #Add test data here using controllers 
     print('database intialized')
 
 
