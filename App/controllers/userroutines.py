@@ -26,5 +26,10 @@ def add_workout_routine(routine_id, workout_id):
 
 def delete_workout_routine(routine_id, workout_id):
     routine = Routine.query.get(routine_id)
+    if not routine:
+        return {"success": False, "message": "Routine not found"}
+    db.session.commit()
+    return {"success": True, "message": "Workout removed from routine successfully"}
+
 
 
