@@ -5,7 +5,7 @@ from flask.cli import with_appcontext, AppGroup
 
 from App.database import db, get_migrate
 from App.main import create_app
-from App.controllers import (create_user, get_all_users_json, get_all_users, get_workout_difficulty, get_all_workouts_json, get_workout_equipment, get_workout_body_part, get_workout_type, search_workouts,get_routine_by_user,add_workout_to_routine,delete_workout_from_routine,add_fixed_routine,delete_fixed_routine )
+from App.controllers import (create_user, get_all_users_json, get_all_users, get_workout_difficulty, get_all_workouts, get_workout_equipment, get_workout_body_part, get_workout_type, search_workouts,get_routine_by_user,add_workout_to_routine,delete_workout_from_routine,add_fixed_routine,delete_fixed_routine, get_workout_id )
 from App.models.workouts import Workouts
 from App.models.routines import Routines, FixedRoutine
 from App.models.routineworkouts import RoutineWorkouts
@@ -104,7 +104,7 @@ def get_workout_id_command(id):
 def get_all_workouts_command():
     workouts = get_all_workouts()
     for workout in workouts:
-        print(workout.get_json())
+        print(workout)
 
 @workouts_cli.command("get_difficulty", help="Get workouts by difficulty")
 @click.argument("difficulty")
