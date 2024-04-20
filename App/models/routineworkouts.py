@@ -8,3 +8,9 @@ class RoutineWorkouts(db.Model):
     def __init__(self, routineId, workoutId):
         self. routineId = routineId
         self.workoutId = workoutId
+
+    def get_json():
+        return {
+            "routineId" : routineId,
+            "workoutId" : workoutId
+        }

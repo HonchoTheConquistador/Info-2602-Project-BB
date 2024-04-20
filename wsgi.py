@@ -5,7 +5,7 @@ from flask.cli import with_appcontext, AppGroup
 
 from App.database import db, get_migrate
 from App.main import create_app
-from App.controllers import (create_user, get_all_users_json, get_all_users, get_workout_difficulty, get_all_workouts, get_workout_equipment, get_workout_body_part, get_workout_type, search_workouts,get_routine_by_user,add_workout_to_routine,delete_workout_from_routine,add_fixed_routine,delete_fixed_routine, get_workout_id )
+from App.controllers import (create_user, get_all_users_json, get_all_users, get_workout_difficulty, get_all_workouts, get_workout_equipment, get_workout_body_part, get_workout_type, search_workouts, get_workout_id )
 from App.models.workouts import Workouts
 from App.models.routines import Routines, FixedRoutine
 from App.models.routineworkouts import RoutineWorkouts
@@ -148,48 +148,7 @@ def search_workouts_command(word):
 
 app.cli.add_command(workouts_cli)
 ##########################################
-user_routines_cli = AppGroup('user_routines', help='User Routines Object commands')
 
-@user_routines_cli.command("get_by_user", help="Get routines for a specific user")
-@click.argument("user_id", type=int)
-def get_routines_by_ser_command(user_id):
-    routines = get_routine_by_user(user_id)
-    if routines:
-        for routine in routines:
-            print(f"Routine ID: {routine['routineId']}, Name: {routine['routineName']}")
-            for workout in routine['workouts']:
-                print(workout)
-    else:
-        print("No routines found for user")
-
-@user_routines_cli.command("add_workout_to_routine", help="Add a workout to a routine")
-@click.argument("routine_id", type=int)
-@click.argument("workout_id", type=int)
-def add_workout_to_routine_command(routine_id, workout_id):
-    result = add_workout_to_routine(routine_id, workout_id)
-    print(result['message'])
-
-@user_routines_cli.command("remove_workout_from_routine", help="Remove a workout from a routine")
-@click.argument("routine_id", type=int)
-@click.argument("workout_id", type=int)
-def remove_workout_from_routine_command(routine_id, workout_id):
-    result = delete_workout_from_routine(routine_id, workout_id)
-    print(result['message'])
-
-@user_routines_cli.command("add_fixed_routine", help="Add a fixed routine")
-@click.argument("name")
-@click.argument("difficulty")
-def add_fixed_routine_command(name, difficulty):
-    result = add_fixed_routine(name, difficulty)
-    print(result['message'])
-
-@user_routines_cli.command("delete_fixed_routine", help="Delete a fixed routine")
-@click.argument("routine_id", type=int)
-def delete_fixed_routine_command(routine_id):
-    result = delete_fixed_routine(routine_id)
-    print(result['message'])
-
-app.cli.add_command(user_routines_cli)
 ##########################################
 test = AppGroup('test', help='Testing commands') 
 
