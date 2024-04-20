@@ -31,28 +31,29 @@ def create_app(overrides={}):
     def custom_unauthorized_response(error):
         return render_template('401.html', error=error), 401
 
-    # @app.route('/')
-    # def index():
-    #     return render_template('users.html')
+#     @app.route('/')
+#     #def index():
+#         return render_template('users.html')
 
-    # @app.route('/login', methods=['POST'])
-    # def login():
-    #     data = request.form
-    #     username = data.get('username')
-    #     password = data.get('password')
+#     @app.route('/login', methods=['POST'])
+#     def login():
+#         data = request.form
+#         username = data.get('username')
+#         password = data.get('password')
         
-    #     user = User.query.filter_by(username=username).first()
-    #     if user and user.check_password(password):
-    #         access_token = create_access_token(identity=user.id)
-    #         print("test")
-    #         response = redirect(url_for('posts'))
-    #         set_access_cookies(response, access_token)
-    #         return response
-    #     else:
-    #         flash("Invalid username or password")
-    #         return redirect(url_for('index'))
+#         user = User.query.filter_by(username=username).first()
+#         if user and user.check_password(password):
+#             access_token = create_access_token(identity=user.id)
+#            print("test")
+#             response = redirect(url_for(''))
+#             set_access_cookies(response, access_token)
+#             return response
+#         else:
+#             flash("Invalid username or password")
+#             return redirect(url_for('index'))
 
-    return app
+#    return app
+ 
 
 if __name__ == "__main__":
     app = create_app()

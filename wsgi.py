@@ -6,6 +6,7 @@ from flask.cli import with_appcontext, AppGroup
 from App.database import db, get_migrate
 from App.main import create_app
 from App.controllers import (create_user, get_all_users_json, get_all_users, get_workout_difficulty, get_all_workouts, get_workout_equipment, get_workout_body_part, get_workout_type, search_workouts, get_workout_id )
+from App.controllers import (get_fixed_routines, get_routine_id, get_user_id, get_user_routines, add_entry_routines, delete_entry_routines)
 from App.models.workouts import Workouts
 from App.models.routines import Routines, FixedRoutine
 from App.models.routineworkouts import RoutineWorkouts

@@ -11,6 +11,6 @@ class RoutineWorkouts(db.Model):
 
     def get_json():
         return {
-            "routineId" : routineId,
-            "workoutId" : workoutId
+            "routineId" : self.routineId,
+            "workoutId" : self.workoutId
         }

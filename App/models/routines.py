@@ -25,18 +25,29 @@ class Routines(db.Model):
       }
 
 class CustomRoutine(Routines):
-    __tablename__ = 'custom_routines'
+  __tablename__ = 'custom_routines'
+  userId = db.Column(db.Integer,nullable=False)
+  __mapper_args__ = {
+    'polymorphic_identity': 'customRoutine',
+  }
 
-#   todos = db.relationship(
-#       'Todo', backref='user',
-#       lazy=True)  # sets up a relationship to todos which references User
-    __mapper_args__ = {
-      'polymorphic_identity': 'customRoutine',
-    }
+  def __init__(self, userID, name, difficulty, dateCreated):
+    super().__init__(name,difficulty,dateCreated)
+    self.userId = userID
+
+  def get_json(self):
+      return {
+        "routineId" : self.routineId,
+        "userId" : self.userId,
+        "routineType": self.routineType,
+        "routineName" : self.routineName,
+        "difficulty" : self.difficulty,
+        "dateCreated" : self.dateCreated
+      }
 
 class FixedRoutine(Routines):
   __tablename__ = 'fixed_routines'
-  routineType = db.Column(db.String(120))
+  routineType = db.Column(db.String(50),nullable=False)
   __mapper_args__ = {
       'polymorphic_identity': 'fixedRoutine',
   }

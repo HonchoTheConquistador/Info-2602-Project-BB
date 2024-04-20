@@ -1,0 +1,77 @@
+<!doctype html>
+<html>
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Signup Page</title>
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+        }
+        .image-side {
+            background-size: cover;
+            background-position: center;
+            height: calc(100vh - 64px);
+        }
+        .signup-form {
+            padding-left: 10%;
+            padding-right: 10%;
+        }
+        .form-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .container {
+            height: calc(100vh - 64px);
+        }
+    </style>
+</head>
+<body>
+    <nav class="black">
+        <div class="nav-wrapper">
+            <a href="#!" class="brand-logo center">Signup Page</a>
+        </div>
+    </nav>
+    <div class="row" style="margin: 0;">
+        <div class="col s6 image-side" style="background-image: url('left-image-url');">
+            <!-- Left image background -->
+        </div>
+        <div class="col s6 image-side" style="background-image: url('right-image-url');">
+            <!-- Right image background -->
+        </div>
+    </div>
+    <div class="valign-wrapper" style="height: calc(100vh - 64px);">
+        <div class="container">
+            <form method="POST" action="/signup" class="signup-form">
+                <div class="input-field">
+                    <input id="username" type="text" class="validate" required>
+                    <label for="username">Username</label>
+                </div>
+                <div class="input-field">
+                    <input id="password" type="password" class="validate" required>
+                    <label for="password">Password</label>
+                </div>
+                <div class="input-field">
+                    <input id="confirm_password" type="password" class="validate" required>
+                    <label for="confirm_password">Confirm Password</label>
+                </div>
+                <div class="input-field">
+                    <input id="level" type="number" class="validate" required>
+                    <label for="level">Level</label>
+                </div>
+                <div class="center">
+                    <button type="submit" class="btn waves-effect waves-light">Sign Up</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script>
+        M.AutoInit();
+    </script>
+</body>
+</html>
