@@ -2,11 +2,22 @@
 {% block title %}Home Page{% endblock %}
 {% block page %}Home Page{% endblock %}
 
+
 {{ super() }}
 
 {% block content %}
       <head>
-    
+      <title>Home</title>
+      <link rel ="stylesheet" href ="style.css">
       </head>
-
+      <body>
+            <header>
+                  <div class = "main">
+                        <ul>
+                              <li><a href ="#">SearchBar</a></li>
+                              <li><a href ="#">UserProfile</a></li>
+                        </ul>
+                  </div>
+            </header>
+      </body>
 {% endblock %}

@@ -6,7 +6,7 @@ from flask.cli import with_appcontext, AppGroup
 from App.database import db, get_migrate
 from App.main import create_app
 from App.controllers import (create_user, get_all_users_json, get_all_users, get_workout_difficulty, get_all_workouts, get_workout_equipment, get_workout_body_part, get_workout_type, search_workouts, get_workout_id )
-from App.controllers import (get_fixed_routines, get_routine_id, get_user_id, get_user_routines, add_entry_routines, delete_entry_routines)
+from App.controllers import (get_all_fixed_routines, get_user_routines, add_entry_routines, delete_entry_routines)
 from App.models.workouts import Workouts
 from App.models.routines import Routines, FixedRoutine
 from App.models.routineworkouts import RoutineWorkouts
@@ -90,7 +90,7 @@ app.cli.add_command(user_cli) # add the group to the cli
 '''
 Test Commands
 '''
-##########################################
+########################################## workout.py
 workouts_cli = AppGroup('workouts', help='Workout object commands')
 
 @workouts_cli.command("get_id", help="Get workout by ID")
@@ -179,4 +179,19 @@ def show_all_routines():
 
 app.cli.add_command(routines)
 
-##########################################
+######################################### userroutine.py
+userroutine_tests = AppGroup('userroutine_tests', help='Testing commands for user routine controllers')
+
+@userroutine_tests.command("get_user_routines", help="Run tests for getting user routines")
+def get_user_routines_command():
+    sys.exit(pytest.main(["-k", "TestGetUserRoutines"]))
+
+@userroutine_tests.command("add_entry", help="Run tests for adding entry to user routines")
+def add_entry_command():
+    sys.exit(pytest.main(["-k", "TestAddEntryRoutines"]))
+
+@userroutine_tests.command("delete_entry", help="Run tests for deleting entry from user routines")
+def delete_entry_command():
+    sys.exit(pytest.main(["-k", "TestDeleteEntryRoutines"]))
+
+app.cli.add_command(userroutine_tests)
