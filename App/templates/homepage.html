@@ -37,10 +37,27 @@
         .user-info {
             display: flex;
             align-items: center;
-            margin-left: auto; /* Aligns to the right */
+            margin-left: auto;
         }
         .user-info a {
             color: white;
+        }
+        .user-icon {
+            background-color: #ee6e73; /* Red color background for highlight */
+            border-radius: 50%; /* Makes it round */
+            padding: 5px; /* Adds some spacing inside the circle */
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3); /* Adds a subtle shadow */
+            transition: transform 0.3s ease-in-out; /* Smooth transformation on hover */
+        }
+
+        .user-icon i {
+            color: white; /* White color icon */
+            font-size: 24px; /* Larger font size for visibility */
+        }
+
+        .user-icon:hover {
+            transform: scale(1.1); /* Scales up the icon on hover */
+            cursor: pointer; /* Changes cursor to pointer to indicate it's clickable */
         }
         .container {
             display: flex;
@@ -53,7 +70,7 @@
         }
         .main-content {
             width: 60%;
-            display: none; /* Initially hidden, shown when a sidebar card is clicked */
+            display: none;
         }
         .row {
             display: flex;
@@ -64,17 +81,17 @@
             padding: 10px;
         }
         .col {
-            width: 50%; /* Sidebar cards size */
+            width: 50%;
         }
         .main-col {
-            flex: 0 0 33.3333%; 
-            max-width: 33.3333%; 
+            flex: 0 0 25%;
+            max-width: 25%;
         }
         .card {
+            margin: 10px;
+            overflow: hidden;
             transition: box-shadow .25s, transform .25s;
             border-radius: 10px;
-            overflow: hidden;
-            height: auto; /* Allow card height to expand as needed */
         }
         .card:hover {
             transform: scale(1.05);
@@ -82,35 +99,36 @@
         }
         .expanded-card {
             position: fixed;
-            top: 5%; /* Less margin from the top for larger card */
+            top: 5%;
             left: 50%;
             transform: translateX(-50%);
-            width: 70%; /* Increasing the width to 70% of the viewport */
-            max-width: 1000px; /* Increasing the maximum width */
+            width: 80%;
+            max-width: 750px;
+            min-height: 750px;
             background-color: white;
-            padding: 30px; /* More padding for better content spacing */
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.4);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0px 12px 24px rgba(0, 0, 0, 0.2);
             display: none;
-            z-index: 1100; /* Ensure it's above other elements */
+            z-index: 1100;
         }
         .close-icon {
             cursor: pointer;
-            position:absolute;
+            position: absolute;
             top: 10px;
             right: 10px;
             font-size: 24px;
             color: #666;
         }
         .overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0,0,0,0.5); /* Semi-transparent overlay */
-        z-index: 1000; /* High z-index but lower than the card */
-        display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 999;
+            display: none;
         }
     </style>
 </head>
@@ -119,7 +137,9 @@
         <a href="{{ url_for('auth_views.logout_action') }}" class="logout-button">Logout</a>
         <a href="#!" class="brand-logo logo-center">Home Page</a>
         <div class="user-info">
-            <i class="material-icons">account_circle</i>
+            <div class="user-icon">
+                <i class="material-icons">account_circle</i>
+            </div>
             <a href="/userprofile">{{ current_user.username }}</a> 
         </div>
     </nav>
@@ -130,7 +150,13 @@
     <div class="expanded-card">
         <span class="close-icon" onclick="closeExpandedCard()">X</span>
         <h4 id="expandedCardTitle"></h4>
-        <p id="expandedCardContent"></p>
+        <p><strong>Name:</strong> <span id="cardName"></span></p>
+        <p><strong>Difficulty:</strong> <span id="cardDifficulty"></span></p>
+        <p><strong>Muscles Worked:</strong> <span id="cardMuscles"></span></p>
+        <p><strong>Type:</strong> <span id="cardType"></span></p>
+        <p><strong>Equipment:</strong> <span id="cardEquipment"></span></p>
+        <p><strong>Video Illustration:</strong> <span id="cardVideo"></span></p>
+        <button class="btn waves-effect waves-light" onclick="addToRoutine()">Add to Routine</button>
     </div>
     <div class="container">
         <div class="left-sidebar">
@@ -169,7 +195,7 @@
 
             for (let i = 0; i < 4; i++) {
                 const cardHtml = `
-                    <div class="main-col" onclick="expandCard('Activity ${activityNum} - Detail ${i + 1}', 'Detailed information about Activity ${activityNum} part ${i + 1}')">
+                    <div class="main-col" onclick="expandCard('Activity ${activityNum} - Detail ${i + 1}', 'Detailed information about Activity ${activityNum} part ${i + 1}', 'Name ${i + 1}', 'Medium', 'Biceps', 'Strength', 'Dumbbells', 'Link to Video')">
                         <div class="card">
                             <div class="card-image">
                                 <img src="https://via.placeholder.com/400x200">
@@ -185,20 +211,29 @@
             }
         }
 
-        function expandCard(title, content) {
-            document.querySelector('.overlay').style.display = 'block'; // Show overlay
+        function expandCard(title, content, name, difficulty, muscles, type, equipment, video) {
+            document.querySelector('.overlay').style.display = 'block';
             const card = document.querySelector('.expanded-card');
-            card.style.display = 'block'; // Show the expanded card
+            card.style.display = 'block';
             document.getElementById('expandedCardTitle').textContent = title;
-            document.getElementById('expandedCardContent').textContent = content;
+            document.getElementById('cardName').textContent = name;
+            document.getElementById('cardDifficulty').textContent = difficulty;
+            document.getElementById('cardMuscles').textContent = muscles;
+            document.getElementById('cardType').textContent = type;
+            document.getElementById('cardEquipment').textContent = equipment;
+            document.getElementById('cardVideo').textContent = video;
         }
 
         function closeExpandedCard() {
-            document.querySelector('.overlay').style.display = 'none'; // Hide overlay
-            document.querySelector('.expanded-card').style.display = 'none'; // Hide the expanded card
+            document.querySelector('.overlay').style.display = 'none';
+            document.querySelector('.expanded-card').style.display = 'none';
+        }
+
+        function addToRoutine() {
+            // Placeholder for add to routine functionality
+            console.log('Add to routine clicked');
         }
         M.AutoInit();
     </script>
 </body>
 </html>
- 
