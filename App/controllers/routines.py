@@ -8,12 +8,15 @@ def get_routine(name):
 
 #finds a specified routine by name
 def get_routine_for_user(name,userID):
-    return CustomRoutine.query.filter_by(routineName=name,userId=userID)
+    return CustomRoutine.query.filter_by(routineName=name,userId=userID).first()
 
 #gets all fixed routines 
 def get_all_fixed_routines():
     routines = FixedRoutine.query.all()
     return routines
+
+def get_fixed_routine_by_id(routine_id):
+    return FixedRoutine.query.get(routine_id)
 
 def get_all_fixed_routines_json():
     routines = FixedRoutine.query.all()

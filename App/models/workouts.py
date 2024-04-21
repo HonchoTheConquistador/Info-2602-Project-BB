@@ -20,6 +20,7 @@ class Workouts(db.Model):
 
     def get_json(self):
         return{
+            "workoutId" : self.workoutID,
             "workoutName" : self.workoutName,
             "description" : self.description,
             "workoutType" : self.workoutType,

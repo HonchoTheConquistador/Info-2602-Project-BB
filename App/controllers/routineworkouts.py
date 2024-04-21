@@ -5,6 +5,10 @@ def get_all_routine_workouts(): # gets all the routine workouts from the routine
     routines = RoutineWorkouts.query.all()
     return routines
 
+def get_workouts_by_routine(routineId):
+    workouts = RoutineWorkouts.query.filter_by(routineId=routineId).all()
+    return workouts
+
 
 def add_routine_workout(routineID,workoutID): # Adds a new entry to the routine workouts table 
     routineWorkout = RoutineWorkouts(routineID,workoutID)

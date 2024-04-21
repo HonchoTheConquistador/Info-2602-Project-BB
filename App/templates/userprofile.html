@@ -76,19 +76,20 @@
     <div class="container">
         <div class="main-content">
             <h4>Fixed Routines</h4>
-        {% for routine in fixedRoutines %}
-            <div class="routine">
-            <a href="/routine/{{ routine.id }}">
-            {{ routine.routineName }}
-             </a>
-            </div>
-        {% endfor %}
-
+            {% for routine in fixedRoutines %}
+                <div class="routine">
+                    <!-- This bypasses url_for and manually creates the path -->
+                    <a href="/auth/routine/{{routine.routineId}}">
+                        {{ routine.routineName }}
+                    </a>
+                </div>
+            {% endfor %}
             <h4>Custom Routines</h4>
             {% for routine in customRoutines %}
                 <div class="routine">{{routine.routineName}}<i class="material-icons">edit</i><i class="material-icons">delete</i></div>
             {% endfor %}
             <button class="btn waves-effect waves-light">Create New Routine</button>
+            
         </div>
         <div class="right-panel">
             <div class="user-image"></div>

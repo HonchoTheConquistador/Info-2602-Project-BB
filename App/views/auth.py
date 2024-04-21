@@ -4,7 +4,9 @@ from flask_jwt_extended import jwt_required, current_user, unset_jwt_cookies, se
 from.index import index_views
 
 from App.controllers import (
-    login
+    create_user,
+    login,
+    
 )
 from App.controllers import get_all_fixed_routines_json
 
@@ -24,9 +26,27 @@ def get_user_page():
 def identify_page():
     return render_template('message.html', title="Identify", message=f"You are logged in as {current_user.id} - {current_user.username}")
 
-@auth_views.route('/signup', methods=['GET'])
+@auth_views.route("/signup", methods=['GET'])
 def signup_page():
-    return render_template('signup.html', title="Sign Up") 
+    return render_template("signup.html")
+
+@auth_views.route("/signup", methods=['POST'])
+def signup_action():
+    response = None
+    try:
+        username = request.form['username']
+        password = request.form['password']
+        user = User(username=username, password=password)
+        db.session.add(user)
+        db.session.commit()
+        response = redirect(url_for('homepage_views.homepage'))
+        token = create_access_token(identity=user)
+        set_access_cookies(response, token)
+    except IntegrityError:
+        flash('Username already exists')
+        response = redirect(url_for('signup_page'))
+    flash('Account created')
+    return response
 
 
 
@@ -54,18 +74,11 @@ def logout_action():
     flash("Logged Out!")
     return response
     
-@auth_views.route('/routine/<int:routine_id>')
-def routine_details(routine_id):
-    routine = get_routine_by_id(routine_id)  
-    if not routine:
-        return "Routine not found", 404  
-    return render_template('routine_details.html', routine=routine)
 
 
 '''
 API Routes
 '''
-
 @auth_views.route('/api/login', methods=['POST'])
 def user_login_api():
   data = request.json
@@ -86,3 +99,20 @@ def logout_api():
     response = jsonify(message="Logged Out!")
     unset_jwt_cookies(response)
     return response
+
+
+@auth_views.route('/api/signup', methods=['POST'])
+def signup_page_endpoint():
+    data = request.json
+    username = data['username']
+    password = data['password']
+    workoutLevel = data['workoutLevel']
+    newuser = create_user(username,password,workoutLevel)
+    response = None
+    if newuser:
+        
+        return jsonify({"message": f"{newuser.username} was signed up"})
+    else:
+        # Handle invalid credentials
+        return jsonify({"message": f"Failure in was signed up"})
+    

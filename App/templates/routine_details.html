@@ -7,49 +7,60 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>{{ routine.routineName }}</title>
     <style>
-        body, html {
-            height: 100%;
-            margin: 0;
+        body {
             display: flex;
             flex-direction: column;
+            min-height: 100vh;
+            margin: 0;
         }
         .navbar {
             background: #2196f3; /* Blue theme */
             padding: 0 20px;
+            line-height: 56px; /* Aligns text vertically */
             color: white;
         }
-        .info-box, .workout-box {
-            margin: 20px;
+        .container {
             padding: 20px;
-            border: 1px solid #ddd; /* Light grey border */
+            flex: 1;
+        }
+        .card-panel {
+            margin: 20px 0;
+            padding: 15px;
             border-radius: 10px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Subtle shadow */
         }
-        .info-box {
-            background-color: #f9f9f9; /* Light grey background */
+        .deep-blue {
+            background-color: #e3f2fd;
         }
-        .workout-box {
-            background-color: #fff; /* White background */
+        h5 {
+            font-weight: 500;
+            color: #424242; /* Dark grey */
+        }
+        p {
+            margin: 5px 0;
+            color: #616161; /* Medium grey */
         }
     </style>
 </head>
 <body>
-    <nav class="navbar">
-        <div>{{ routine.routineName }}</div>
+    <nav class="navbar blue darken-2">
+        <div class="nav-wrapper">
+            <a href="{{ url_for('userprofile_views.view_userprofile') }}" class="left"><i class="material-icons">arrow_back</i></a>
+            <span class="brand-logo center">{{ routine.routineName }}</span>
+        </div>
     </nav>
     <div class="container">
-        <div class="info-box">
-            <h4>Routine Information</h4>
+        <div class="card-panel deep-blue">
+            <h5>Routine Information</h5>
             <p><strong>Type:</strong> {{ routine.type }}</p>
             <p><strong>Description:</strong> {{ routine.description }}</p>
             <p><strong>Duration:</strong> {{ routine.duration }} minutes</p>
         </div>
-        <h4>Workouts</h4>
-        {% for workout in routine.workouts %}
-        <div class="workout-box">
-            <h5>{{ workout.name }}</h5>
-            <p>{{ workout.description }}</p>
-            <p><strong>Duration:</strong> {{ workout.duration }} minutes</p>
+        <h5>Workouts Included</h5>
+        {% for workout in workoutsList %}
+        <div class="card-panel white">
+            <p>{{ workout }}</h6>
+            <p>{{ workout.workoutId }}</p>
+            <p><strong>Duration:</strong> {{ workout.routineId }} minutes</p>
         </div>
         {% endfor %}
     </div>

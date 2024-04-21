@@ -193,6 +193,7 @@
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <script>
+        
         function showActivities(activityNum) {
             const activityList = document.getElementById('activityList');
             document.getElementById('mainContent').style.display = 'block';
@@ -215,6 +216,57 @@
                 activityList.innerHTML += cardHtml;
             }
         }
+
+//         function showActivities(activityNum) {
+//     const activityList = document.getElementById('activityList');
+//     document.getElementById('mainContent').style.display = 'block';
+//     activityList.innerHTML = '';
+
+//     fetch('/workouts') // Assuming your endpoint for fetching workouts is '/workouts'
+//         .then(response => response.json())
+//         .then(data => {
+//             data.forEach((workout, index) => {
+//                 const cardHtml = `
+//                     <div class="main-col" onclick="expandCard('${workout.workoutName}', '${workout.description}', '${workout.workoutName}', '${workout.Level}', '${workout.bodypart}', '${workout.workoutType}', '${workout.equipment}', '')">
+//                         <div class="card">
+//                             <div class="card-image">
+//                                 <img src="https://via.placeholder.com/400x200">
+//                                 <span class="card-title">${workout.workoutName}</span>
+//                             </div>
+//                             <div class="card-content">
+//                                 <p>${workout.description}</p>
+//                             </div>
+//                         </div>
+//                     </div>
+//                 `;
+//                 activityList.innerHTML += cardHtml;
+//             });
+//         })
+//         .catch(error => console.error('Error fetching workouts:', error));
+// }
+////////////////////////////////////////////////
+//         function showActivities(activityType) {
+//     const activityList = document.getElementById('activityList');
+//     document.getElementById('mainContent').style.display = 'block';
+//     activityList.innerHTML = '';
+//     const filteredActivities = activities.filter(activity => activity.type === activityType);
+//     filteredActivities.forEach((activity, index) => {
+//         const cardHtml = `
+//             <div class="card" onclick="expandCard('${activity.workoutName}', '${activity.description}', '${activity.workoutName}', '${activity.Level}', '${activity.bodypart}', '${activity.workoutType}', '${activity.equipment}', '${activity.RatingDesc}')">
+//                 <div class="card">
+//                     <div class="card-image">
+//                         <img src="https://via.placeholder.com/400x200">
+//                         <span class="card-title">${activity.title}</span>
+//                     </div>
+//                     <div class="card-content">
+//                         <p>${activity.description}</p>
+//                     </div>
+//                 </div>
+//             </div>
+//         `;
+//         activityList.innerHTML += cardHtml;
+//     });
+// }
 
         function expandCard(title, content, name, difficulty, muscles, type, equipment, video) {
             document.querySelector('.overlay').style.display = 'block';

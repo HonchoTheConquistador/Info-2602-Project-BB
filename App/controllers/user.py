@@ -3,9 +3,15 @@ from App.database import db
 
 def create_user(username, password,workoutLevel):
     newuser = User(username=username, password=password,workoutLevel=workoutLevel)
-    db.session.add(newuser)
-    db.session.commit()
+    try:
+        db.session.add(newuser)
+        db.session.commit()
+    except Exception:  # attempted to insert a duplicate user
+        db.session.rollback()
+        flash("username or email already exists")  # error message
+        return None
     return newuser
+
 
 def get_user_by_username(username):
     return User.query.filter_by(username=username).first()

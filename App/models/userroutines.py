@@ -9,8 +9,8 @@ class UserRoutines(db.Model):
         self.userID = userID
         self.routineId = routineId
     
-    def get_json():
+    def get_json(self):
         return {
             "userId" : self.userID,
-            "routineId" : self.routineID
+            "routineId" : self.routineId
         }

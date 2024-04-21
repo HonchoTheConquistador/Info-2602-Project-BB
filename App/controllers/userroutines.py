@@ -27,6 +27,12 @@ def get_user_routines(user_id): # gets all routines associated with the user, in
     if user_routines:
         return user_routines
     return None
+
+def get_user_routines_json(user_id): # gets all routines associated with the user, including both custom and fixed routines
+    user_routines = UserRoutines.query.filter_by(userID=user_id).all()
+    if user_routines:
+        return [user_routine.get_json( ) for user_routine in user_routines]
+    return None
     
 def add_entry_routines(user_id, routine_id):
     try:
