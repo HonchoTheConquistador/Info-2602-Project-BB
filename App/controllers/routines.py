@@ -62,5 +62,15 @@ def edit_custom_routine(routineID,name): # Edits the name of a custom routine
         db.session.commit()
     return
 
-def make_fixed_routine(): #adds a fixed routine entry
-    pass
+def make_fixed_routine(routineType,name,routineDifficulty,dateCreated): #adds a fixed routine entry
+    routine = FixedRoutine(routineType,name,routineDifficulty,dateCreated)
+    if routine:
+        db.session.add(routine)
+        db.session.commit()
+    return
+
+def find_fixed_routine(name):
+    routine = FixedRoutine.query.filter_by(routineName=name).first()
+    if routine:
+        return routine
+    return None 

@@ -1,3 +1,8 @@
 ,Name,RoutineType,Workouts,DateCreated
-0,Chest Blast,Chest,"916,923,924",12/2/2022
-1,Leg Day Killa,Legs,"1212,1215,1292,893",13/5/2023
+0,Chest Blast,Strength,"916,923,924",12/2/2022
+1,Leg Day Killa,Strength,"1212,1215,1292,893",13/5/2023
+2,Ab Stretching session,Stretching,"220,224,225",4/4/2014
+3,Cardio cardio cardio,Cardio,"884,993,1337,1731",7/14/2020
+4,Covid Killer,Cardio,"884,2002,2004",2/10/2021
+5,Flex off,Strongman,"2007,2011,2016,2020",11/18/2018
+6,Mario jump,Plyometrics,"2019,2024,2025,2026,2027",6/4/2020

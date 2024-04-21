@@ -7,7 +7,7 @@ from App.database import db, get_migrate
 from App.main import create_app
 from App.controllers import (create_user, get_all_users_json, get_all_users, get_workout_difficulty, get_all_workouts, get_workout_equipment, get_workout_body_part, get_workout_type, search_workouts, get_workout_id )
 from App.controllers import (get_all_fixed_routines, get_user_routines, add_entry_routines, delete_entry_routines)
-from App.controllers import (get_all_routine_workouts, add_routine_workout, delete_routine_workout, delete_routine_workouts)
+from App.controllers import (get_all_routine_workouts, add_routine_workout, delete_routine_workout, delete_routine_workouts,make_fixed_routine,find_fixed_routine)
 from App.models.workouts import Workouts
 from App.models.routines import Routines, FixedRoutine
 from App.models.routineworkouts import RoutineWorkouts
@@ -38,18 +38,19 @@ def initialize():
             routineType = row["RoutineType"]
             dateCreated = row["DateCreated"]
             workoutslist = row["Workouts"].split(",")
-            routine = FixedRoutine(routineType,name,routineDifficulty,dateCreated)
-            db.session.add(routine)
+            make_fixed_routine(routineType,name,routineDifficulty,dateCreated)
+            routine = find_fixed_routine(name) 
             # not sure if i have to commit it to the db first, will test 
-            for i in workoutslist:
-                workout = Workouts.query.filter_by(workoutID =int(i)).first()
-                routineDifficulty = routineDifficulty + workout.Level
-                # add routine workout stuff here 
-                routineWorkout = RoutineWorkouts(routine.routineId,workout.workoutID)
-                db.session.add(routineWorkout)
-            routineDifficulty = routineDifficulty/len(workoutslist)
-            routine.difficulty = round(routineDifficulty)
-            db.session.add(routine)
+            if routine:
+                for i in workoutslist:
+                    workout = Workouts.query.filter_by(workoutID =int(i)).first()
+                    routineDifficulty = routineDifficulty + workout.Level
+                    # add routine workout stuff here 
+                    routineWorkout = RoutineWorkouts(routine.routineId,workout.workoutID)
+                    db.session.add(routineWorkout)
+                routineDifficulty = routineDifficulty/len(workoutslist)
+                routine.difficulty = round(routineDifficulty)
+                db.session.add(routine)
 
     db.session.commit()
     create_user('bob', 'bobpass',1)
@@ -201,7 +202,7 @@ routines = AppGroup('routines' , help='Tests routine commands')
 
 @routines.command("get_all", help="Shows all Routines")
 def show_all_routines():
-    routines = get_all_routines()
+    routines = get_all_fixed_routines()
     for routine in routines:
         print(routine.get_json())
 

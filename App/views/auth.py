@@ -25,20 +25,24 @@ def identify_page():
 
 @auth_views.route('/signup', methods=['GET'])
 def signup_page():
-    return render_template('signup.html', title="Sign Up")    
+    return render_template('signup.html', title="Sign Up") 
+
+@auth_views.route('/homepage')
+def homepage():
+    return render_template('homepage.html', title="Home Page")
 
 @auth_views.route('/login', methods=['POST'])
 def login_action():
     data = request.form
     token = login(data['username'], data['password'])
-    response = redirect(request.referrer)
     if not token:
         flash('Bad username or password given'), 401
+        return redirect(url_for('auth_views.login_page'))  
     else:
         flash('Login Successful')
+        response = redirect(url_for('auth_views.homepage'))  
         set_access_cookies(response, token)
-    return response
-
+        return response
 @auth_views.route('/logout', methods=['GET'])
 def logout_action():
     response = redirect(request.referrer) 
