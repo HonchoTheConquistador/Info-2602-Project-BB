@@ -72,16 +72,16 @@
             {% endfor %}
 
             <h4>Custom Routines</h4>
-            {% for i in customRoutines %}
-                <div class="routine">{{i.routineName}}<i class="material-icons">Edit</i><i class="material-icons">Delete</i></div>
+            {% for routine in customRoutines %}
+                <div class="routine">{{routine.routineName}}<i class="material-icons">Edit</i><i class="material-icons">Delete</i></div>
             {% endfor %}
             <a href=""></a>
             <button class="btn waves-effect waves-light">Create New Routine</button>
         </div>
         <div class="right-panel">
             <div class="user-image"></div>
-            <div>User: {{ current_user.username }}</div>
-            <div>Email: {{ current_user.email }}</div> <!-- Assuming email is available -->
+            <div>User: {{ user.username }}</div>
+            <div>Email: {{ user.email }}</div> <!-- Assuming email is available -->
         </div>
     </div>
 

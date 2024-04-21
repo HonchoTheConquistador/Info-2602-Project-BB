@@ -8,9 +8,9 @@ def get_all_routine_workouts(): # gets all the routine workouts from the routine
 
 def add_routine_workout(routineID,workoutID): # Adds a new entry to the routine workouts table 
     routineWorkout = RoutineWorkouts(routineID,workoutID)
-    if routine:
+    if routineWorkout:
         db.session.add(routineWorkout)
-        db.commit()
+        db.session.commit()
     return
 
 

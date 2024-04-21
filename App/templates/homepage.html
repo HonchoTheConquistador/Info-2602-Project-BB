@@ -14,7 +14,6 @@
         }
         nav {
             position: relative;
-            z-index: 10;
             display: flex;
             justify-content: space-between;
             padding: 0 20px;
@@ -38,80 +37,81 @@
         .user-info {
             display: flex;
             align-items: center;
+            margin-left: auto; /* Aligns to the right */
         }
         .user-info a {
-            margin-left: 10px;
             color: white;
         }
         .container {
-            width: 100%;
-            margin: auto;
             display: flex;
+            width: 100%;
         }
         .left-sidebar {
             width: 40%;
             padding-right: 20px;
             overflow-y: auto;
-            max-height: 800px;
         }
         .main-content {
             width: 60%;
-            display: none;
+            display: none; /* Initially hidden, shown when a sidebar card is clicked */
         }
         .row {
             display: flex;
             flex-wrap: wrap;
         }
-        .col {
-            width: 50%;
+        .col, .main-col {
             cursor: pointer;
+            padding: 10px;
+        }
+        .col {
+            width: 50%; /* Sidebar cards size */
         }
         .main-col {
-            width: 25%;
+            flex: 0 0 33.3333%; 
+            max-width: 33.3333%; 
         }
         .card {
-            margin: 10px;
-            overflow: hidden; /* Ensures the shadow does not bleed outside the border */
-            transition: box-shadow .25s, transform .25s; /* Smooth transition for hover effects */
-            border-radius: 10px; /* Rounded corners */
+            transition: box-shadow .25s, transform .25s;
+            border-radius: 10px;
+            overflow: hidden;
+            height: auto; /* Allow card height to expand as needed */
         }
         .card:hover {
-            transform: scale(1.05); /* Slightly increase size */
-            box-shadow: 0 10px 20px rgba(0,0,0,0.3); /* Larger shadow for emphasis */
-            z-index: 1; /* Make sure it's above other elements */
+            transform: scale(1.05);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
         }
         .expanded-card {
-        position: fixed;
-        top: 10%;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 80%;
-        max-width: 600px;
-        z-index: 1000; /* Ensures it is on top of other content */
-        background-color: white;
-        box-shadow: 0 4px 8px rgba(0,0,0,0.4);
-        border-radius: 10px;
-        padding: 20px;
-        display: none; /* Hidden by default */
-    }
-    .close-icon {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        cursor: pointer;
-        font-size: 24px;
-        color: #666;
-    }
-    .overlay {
+            position: fixed;
+            top: 5%; /* Less margin from the top for larger card */
+            left: 50%;
+            transform: translateX(-50%);
+            width: 70%; /* Increasing the width to 70% of the viewport */
+            max-width: 1000px; /* Increasing the maximum width */
+            background-color: white;
+            padding: 30px; /* More padding for better content spacing */
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.4);
+            display: none;
+            z-index: 1100; /* Ensure it's above other elements */
+        }
+        .close-icon {
+            cursor: pointer;
+            position:absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 24px;
+            color: #666;
+        }
+        .overlay {
         position: fixed;
         top: 0;
         left: 0;
         width: 100%;
         height: 100%;
-        background-color: rgba(0,0,0,0.5);
-        z-index: 999; /* Behind the card but above others */
+        background-color: rgba(0,0,0,0.5); /* Semi-transparent overlay */
+        z-index: 1000; /* High z-index but lower than the card */
         display: none;
-    }
+        }
     </style>
 </head>
 <body>
@@ -127,12 +127,11 @@
         <input type="text" placeholder="Search..." class="search-bar">
     </div>
     <div class="overlay" onclick="closeExpandedCard()"></div>
-     <div class="expanded-card">
-    <span class="close-icon" onclick="closeExpandedCard()">X</span>
-    <h4 id="expandedCardTitle"></h4>
-    <p id="expandedCardContent"></p>
+    <div class="expanded-card">
+        <span class="close-icon" onclick="closeExpandedCard()">X</span>
+        <h4 id="expandedCardTitle"></h4>
+        <p id="expandedCardContent"></p>
     </div>
-
     <div class="container">
         <div class="left-sidebar">
             <h2>Sidebar Content</h2>
@@ -161,42 +160,45 @@
             </div>
         </div>
     </div>
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <script>
         function showActivities(activityNum) {
-        const activityList = document.getElementById('activityList');
-        document.getElementById('mainContent').style.display = 'block';
-        activityList.innerHTML = '';
+            const activityList = document.getElementById('activityList');
+            document.getElementById('mainContent').style.display = 'block';
+            activityList.innerHTML = '';
 
-        for (let i = 0; i < 4; i++) {
-            const cardHtml = `
-                <div class="main-col" onclick="expandCard('Activity ${activityNum} - Detail ${i + 1}', 'Detailed information about Activity ${activityNum} part ${i + 1}')">
-                    <div class="card">
-                        <div class="card-image">
-                            <img src="https://via.placeholder.com/400x200">
-                            <span class="card-title">Activity ${activityNum} - Detail ${i + 1}</span>
+            for (let i = 0; i < 4; i++) {
+                const cardHtml = `
+                    <div class="main-col" onclick="expandCard('Activity ${activityNum} - Detail ${i + 1}', 'Detailed information about Activity ${activityNum} part ${i + 1}')">
+                        <div class="card">
+                            <div class="card-image">
+                                <img src="https://via.placeholder.com/400x200">
+                                <span class="card-title">Activity ${activityNum} - Detail ${i + 1}</span>
+                            </div>
+                            <div class="card-content">
+                                <p>Detail about Activity ${activityNum} part ${i + 1}.</p>
+                            </div>
                         </div>
                     </div>
-                </div>
-            `;
-            activityList.innerHTML += cardHtml;
+                `;
+                activityList.innerHTML += cardHtml;
+            }
         }
-    }
 
-    function expandCard(title, content) {
-        document.querySelector('.overlay').style.display = 'block';
-        const card = document.querySelector('.expanded-card');
-        card.style.display = 'block';
-        document.getElementById('expandedCardTitle').textContent = title;
-        document.getElementById('expandedCardContent').textContent = content;
-    }
+        function expandCard(title, content) {
+            document.querySelector('.overlay').style.display = 'block'; // Show overlay
+            const card = document.querySelector('.expanded-card');
+            card.style.display = 'block'; // Show the expanded card
+            document.getElementById('expandedCardTitle').textContent = title;
+            document.getElementById('expandedCardContent').textContent = content;
+        }
 
-    function closeExpandedCard() {
-        document.querySelector('.overlay').style.display = 'none';
-        document.querySelector('.expanded-card').style.display = 'none';
-    }
+        function closeExpandedCard() {
+            document.querySelector('.overlay').style.display = 'none'; // Hide overlay
+            document.querySelector('.expanded-card').style.display = 'none'; // Hide the expanded card
+        }
         M.AutoInit();
     </script>
 </body>
-</html> 
+</html>
+ 

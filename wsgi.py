@@ -8,6 +8,7 @@ from App.main import create_app
 from App.controllers import (create_user, get_all_users_json, get_all_users, get_workout_difficulty, get_all_workouts, get_workout_equipment, get_workout_body_part, get_workout_type, search_workouts, get_workout_id )
 from App.controllers import (get_all_fixed_routines, get_user_routines, add_entry_routines, delete_entry_routines)
 from App.controllers import (get_all_routine_workouts, add_routine_workout, delete_routine_workout, delete_routine_workouts,make_fixed_routine,find_fixed_routine_by_name)
+from App.controllers import (add_custom_routine,edit_custom_routine,delete_custom_routine,get_routine_for_user)
 from App.models.workouts import Workouts
 from App.models.routines import Routines, FixedRoutine
 from App.models.routineworkouts import RoutineWorkouts
@@ -61,9 +62,9 @@ def initialize():
     add_routine_workout(1,3)
     add_routine_workout(1,4) 
     delete_routine_workout(1,3)
-    add_custom_routine(1,test)
-    edit_custom_routine(1,testing)
-    get_routine_for_user(testing,1)
+    add_custom_routine(1,"test")
+    edit_custom_routine(1,"testing")
+    get_routine_for_user("testing",1)
     add_routine_workout(2,3)
     add_routine_workout(2,6)
     add_routine_workout(2,7)

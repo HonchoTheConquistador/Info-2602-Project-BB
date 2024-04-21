@@ -39,7 +39,7 @@ def add_entry_routines(user_id, routine_id):
         return {"success": False, "message": str(e)}
 
 def delete_entry_routines(user_id, routine_id):
-    user_routine = UserRoutines.query.filter_by(userId=user_id, routineId=routine_id).first()
+    user_routine = UserRoutines.query.filter_by(userID=user_id, routineId=routine_id).first()
     if user_routine:
         try:
             db.session.delete(user_routine)

@@ -27,6 +27,7 @@ userprofile_views = Blueprint('userprofile_views', __name__, template_folder='..
 def view_userprofile():
     user_id = jwt_current_user.id
     custom_routines = get_all_custom_routines(user_id)
+    print(custom_routines)
     user_routines = get_user_routines(user_id)
     fixed_routines = get_all_fixed_routines()
     user_fixed_routines = []
@@ -35,7 +36,7 @@ def view_userprofile():
         if obj:
             user_fixed_routines.append(obj)
     
-    return render_template('userprofile.html',user=jwt_current_user,custom_routines=custom_routines,fixed_routines=user_fixed_routines,user_routines=user_routines)
+    return render_template('userprofile.html',user=jwt_current_user,customRoutines=custom_routines,fixedRoutines=user_fixed_routines,user_routines=user_routines)
 
 @userprofile_views.route('/edit_custom_routine/<int:routine_id>', methods=['GET', 'POST'])
 @jwt_required()
