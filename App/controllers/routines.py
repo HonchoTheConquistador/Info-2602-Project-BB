@@ -6,6 +6,10 @@ from datetime import date
 def get_routine(name):
     return Routines.query.filter_by(routineName=name)
 
+#finds a specified routine by name
+def get_routine_for_user(name,userID):
+    return CustomRoutine.query.filter_by(routineName=name,userId=userID)
+
 #gets all fixed routines 
 def get_all_fixed_routines():
     routines = FixedRoutine.query.all()

@@ -54,6 +54,7 @@ def initialize():
 
     db.session.commit()
     create_user('bob', 'bobpass',1)
+    add_entry_routines(1, 1)
     #Add test data here using controllers 
     print('database intialized')
 

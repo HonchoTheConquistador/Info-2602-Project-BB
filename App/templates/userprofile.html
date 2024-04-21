@@ -1,0 +1,91 @@
+<!doctype html>
+<html>
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>User Profile</title>
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+        }
+        .navbar {
+            padding: 0 20px;
+            background: green;
+        }
+        .container {
+            display: flex;
+            height: 100%;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .right-panel {
+            width: 25%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            box-shadow: -2px 0 5px rgba(0,0,0,0.1); /* Shadow on the left side */
+        }
+        .user-image {
+            width: 150px;
+            height: 150px;
+            background: url('https://via.placeholder.com/150');
+            border-radius: 50%;
+            margin-bottom: 20px;
+        }
+        .main-content {
+            flex-grow: 1;
+            padding-right: 20px; /* Add padding to the right of the main content */
+        }
+        .routine {
+            margin: 10px 0;
+            padding: 10px;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 30px;
+        }
+        .routine i {
+            cursor: pointer;
+        }
+        .btn {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="{{ url_for('auth_views.homepage') }}" class="left">Go Back</a>
+        <div class="center">User Profile</div>
+    </nav>
+    <div class="container">
+        <div class="main-content">
+            <h4>Fixed Routines</h4>
+            {% for routine in fixedRoutines%}
+                <div class="routine">{{routine.routineName}}</div>
+            {% endfor %}
+
+            <h4>Custom Routines</h4>
+            {% for i in customRoutines %}
+                <div class="routine">{{i.routineName}}<i class="material-icons">Edit</i><i class="material-icons">Delete</i></div>
+            {% endfor %}
+            <a href="{{ url_for('') }}"> Test</a>
+            <button class="btn waves-effect waves-light">Create New Routine</button>
+        </div>
+        <div class="right-panel">
+            <div class="user-image"></div>
+            <div>User: {{ current_user.username }}</div>
+            <div>Email: {{ current_user.email }}</div> <!-- Assuming email is available -->
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script>M.AutoInit();</script>
+</body>
+</html>

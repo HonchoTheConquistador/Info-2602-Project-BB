@@ -15,27 +15,33 @@
         nav {
             position: relative;
             z-index: 10;
-        }
-        .nav-wrapper {
             display: flex;
-            align-items: center;
             justify-content: space-between;
             padding: 0 20px;
         }
+        .search-bar-container {
+            position: relative;
+            width: 100%; 
+            padding: 10px 20px; 
+            background: white; 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1); 
+        }
         .search-bar {
+            width: 100%; /* Full width within its container */
+        }
+        .logo-center {
             position: absolute;
             left: 50%;
             transform: translateX(-50%);
-            width: 500px;
+            z-index: 1; /* Ensures it's above other elements but under the search bar */
         }
-        .search-bar input {
-            width: 100%;
+        .user-info {
+            display: flex;
+            align-items: center;
         }
-        .brand-logo {
-            padding-left: 10px;
-        }
-        .user-icon {
-            margin-left: auto;
+        .user-info a {
+            margin-left: 10px;
+            color: white; /* Ensures visibility */
         }
         .container {
             width: 100%;
@@ -43,23 +49,25 @@
             display: flex;
         }
         .left-sidebar {
-            width: 40%; /* Adjusted to better align with two cards per line */
+            width: 40%;
             padding-right: 20px;
-            overflow-y: auto; /* Enables vertical scrolling */
-            max-height: 800px; /* Maximum height before scrolling */
+            overflow-y: auto;
+            max-height: 800px;
         }
         .main-content {
-            width: 80%; /* Adjust the main content area width */
+            width: 60%;
+            display: none; /* Initially hides the main content */
         }
         .row {
             display: flex;
             flex-wrap: wrap;
         }
         .col {
-            width: 50%; /* Sidebar columns are 50% to fit two cards in one row */
+            width: 50%;
+            cursor: pointer; /* Indicates clickable items */
         }
         .main-col {
-            width: 25%; /* Main content columns are 25% to fit four cards in one row */
+            width: 25%;
         }
         .card {
             margin: 10px;
@@ -67,17 +75,17 @@
     </style>
 </head>
 <body>
-    <nav class="red">
-        <div class="nav-wrapper">
-            <a href="#!" class="brand-logo">Home Page</a>
-            <div class="search-bar">
-                <input type="text" placeholder="Search..." id="search">
-            </div>
-            <div class="user-icon">
-                <i class="material-icons">account_circle</i>
-            </div>
+    <nav class="dark red">
+        <a href="{{ url_for('auth_views.logout_action') }}" class="logout-button">Logout</a>
+        <a href="#!" class="brand-logo logo-center">Home Page</a>
+        <div class="user-info">
+            <i class="material-icons">account_circle</i>
+            <a href="/userprofile">{{ current_user.username }}</a> 
         </div>
     </nav>
+    <div class="search-bar-container">
+        <input type="text" placeholder="Search..." class="search-bar">
+    </div>
 
     <div class="container">
         <div class="left-sidebar">
@@ -85,50 +93,56 @@
             <p>Scrollable sidebar with two cards per row:</p>
             <div class="row">
                 {% for i in range(8) %}
-                <div class="col"> <!-- Adjusted to two cards per line -->
+                <div class="col" onclick="showActivities({{ i+1 }});">
                     <div class="card">
                         <div class="card-image">
                             <img src="https://via.placeholder.com/400x200">
-                            <span class="card-title">Card S{{ i+1 }}</span>
+                            <span class="card-title">Activity {{ i+1 }}</span>
                         </div>
                         <div class="card-content">
-                            <p>This is sidebar card number {{ i+1 }}. Additional content here.</p>
-                        </div>
-                        <div class="card-action">
-                            <a href="#">More Info</a>
+                            <p>Click to see activities for Activity {{ i+1 }}.</p>
                         </div>
                     </div>
                 </div>
                 {% endfor %}
             </div>
         </div>
-        <div class="main-content">
+        <div class="main-content" id="mainContent">
             <h1>Activity Type/ Muscle Group</h1>
             <p>This page demonstrates a dynamic generation of cards with four cards per row.</p>
-            <div class="row">
-                {% for i in range(20) %}
-                <div class="main-col"> <!-- Adjusted to four cards per line -->
-                    <div class="card">
-                        <div class="card-image">
-                            <img src="https://via.placeholder.com/400x200">
-                            <span class="card-title">Card {{ i+1 }}</span>
-                        </div>
-                        <div class="card-content">
-                            <p>This is sample card number {{ i+1 }}. You can put any information here.</p>
-                        </div>
-                        <div class="card-action">
-                            <a href="#">This is a link</a>
-                        </div>
-                    </div>
-                </div>
-                {% endfor %}
+            <div class="row" id="activityList">
+                <!-- Activities will be loaded here dynamically -->
             </div>
         </div>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <script>
+        function showActivities(activityNum) {
+            document.getElementById('mainContent').style.display = 'block'; // Show the main content area
+            const activityList = document.getElementById('activityList');
+            activityList.innerHTML = ''; // Clear previous content
+
+            // Example dynamic content generation
+            for (let i = 0; i < 4; i++) {
+                const cardHtml = `
+                    <div class="main-col">
+                        <div class="card">
+                            <div class="card-image">
+                                <img src="https://via.placeholder.com/400x200">
+                                <span class="card-title">Activity ${activityNum} - Detail ${i + 1}</span>
+                            </div>
+                            <div class="card-content">
+                                <p>Detail about Activity ${activityNum} part ${i + 1}.</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                activityList.innerHTML += cardHtml; // Append new cards
+            }
+        }
         M.AutoInit();
     </script>
 </body>
 </html>
+

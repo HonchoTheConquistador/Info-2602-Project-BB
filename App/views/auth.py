@@ -6,6 +6,7 @@ from.index import index_views
 from App.controllers import (
     login
 )
+from .controllers import get_all_fixed_routines_json
 
 auth_views = Blueprint('auth_views', __name__, template_folder='../templates')
 
@@ -29,7 +30,12 @@ def signup_page():
 
 @auth_views.route('/homepage')
 def homepage():
-    return render_template('homepage.html', title="Home Page")
+    fixed_routines = get_all_fixed_routines_json() 
+    return render_template('homepage.html', title="Home Page", fixed_routines=fixed_routines
+
+@auth_views.route('/login', methods=['GET'])
+def login_page():
+    return render_template('layout.html', title='Login') 
 
 @auth_views.route('/login', methods=['POST'])
 def login_action():
@@ -37,18 +43,32 @@ def login_action():
     token = login(data['username'], data['password'])
     if not token:
         flash('Bad username or password given'), 401
-        return redirect(url_for('auth_views.login_page'))  
+        return redirect(url_for('auth_views.login'))  
     else:
         flash('Login Successful')
         response = redirect(url_for('auth_views.homepage'))  
         set_access_cookies(response, token)
         return response
+    
 @auth_views.route('/logout', methods=['GET'])
 def logout_action():
-    response = redirect(request.referrer) 
+    response = redirect(url_for('auth_views.login_page'))  
+    unset_jwt_cookies(response)  
     flash("Logged Out!")
-    unset_jwt_cookies(response)
     return response
+    
+@auth_views.route('/routine/<int:routine_id>')
+def routine_details(routine_id):
+    routine = get_routine_by_id(routine_id)  # Make sure this function correctly fetches the routine
+    if not routine:
+        return "Routine not found", 404  
+    return render_template('routine_details.html', routine=routine)
+
+
+#@auth_views.route('/userprofile', methods=['GET'])
+#@jwt_required()  # Requires user to be logged in to view the profile
+#def user_profile():
+#     return render_template('userprofile.html', user=current_user)
 
 '''
 API Routes

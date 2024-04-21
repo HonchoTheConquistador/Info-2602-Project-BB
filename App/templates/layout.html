@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <!--Let browser know website is optimized for mobile-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>{% block title %}{% endblock %}</title>
+    <title>{% block title %}Login{% endblock %}</title>
     <style>
       body, html {
           height: 100%;
@@ -50,7 +50,7 @@
             <div class="container" style="width: 100%;">
                 <div class="row" style="margin:0;">
                     <div class="col s12 m10 login-side"> <!-- This pushes the form to the right half of the screen -->
-                        <form method="POST" action="/login" class="login-form">
+                        <form method="POST" action="{{ url_for('auth_views.login_action') }}" class="login-form">
                             <div class="input-field" style="margin-bottom: 30px;">
                                 <input id="username" name="username" type="text" class="validate" style="font-size: 20px; height: 3rem; padding: 0 12px;" required>
                                 <label for="username" style="font-size: 20px;">Username</label>

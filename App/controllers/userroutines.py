@@ -1,4 +1,4 @@
-from App.models import userroutines, routines
+from App.models import UserRoutines
 from App.database import db
 
 def get_fixed_routines():
@@ -17,14 +17,16 @@ def get_user_id(user_id):
     
 def get_user_routines(user_id): # gets all routines associated with the user, including both custom and fixed routines
     user_routines = UserRoutines.query.filter_by(userID=user_id).all()
-    routines_details = []
-    for user_routine in user_routines:
-        routine = Routine.query.get(user_routine.routineId)
-        if routine:
-            routine_details = routine.get_json()
-            routine_details["routineId"] = user_routine.id
-            routines_details.append(routine_details)
-    return routines_details
+    # routines_details = []
+    # for user_routine in user_routines:
+    #     routine = Routine.query.get(user_routine.routineId)
+    #     if routine:
+    #         routine_details = routine.get_json()
+    #         routine_details["routineId"] = user_routine.id
+    #         routines_details.append(routine_details)
+    if user_routines:
+        return user_routines
+    return None
     
 def add_entry_routines(user_id, routine_id):
     try:
