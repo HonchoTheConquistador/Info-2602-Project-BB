@@ -7,7 +7,7 @@ from App.database import db, get_migrate
 from App.main import create_app
 from App.controllers import (create_user, get_all_users_json, get_all_users, get_workout_difficulty, get_all_workouts, get_workout_equipment, get_workout_body_part, get_workout_type, search_workouts, get_workout_id )
 from App.controllers import (get_all_fixed_routines, get_user_routines, add_entry_routines, delete_entry_routines)
-from App.controllers import (get_all_routine_workouts, add_routine_workout, delete_routine_workout, delete_routine_workouts,make_fixed_routine,find_fixed_routine)
+from App.controllers import (get_all_routine_workouts, add_routine_workout, delete_routine_workout, delete_routine_workouts,make_fixed_routine,find_fixed_routine_by_name)
 from App.models.workouts import Workouts
 from App.models.routines import Routines, FixedRoutine
 from App.models.routineworkouts import RoutineWorkouts
@@ -39,7 +39,7 @@ def initialize():
             dateCreated = row["DateCreated"]
             workoutslist = row["Workouts"].split(",")
             make_fixed_routine(routineType,name,routineDifficulty,dateCreated)
-            routine = find_fixed_routine(name) 
+            routine = find_fixed_routine_by_name(name) 
             # not sure if i have to commit it to the db first, will test 
             if routine:
                 for i in workoutslist:
@@ -72,7 +72,7 @@ def initialize():
     #Add test data here using controllers 
     print('database intialized')
 
-####################################### workouts.py
+#here///////////////////////////////////
 workout_cli = AppGroup('workout', help='Workout management commands')
 
 @workout_cli.command("add", help="Add a workout to a routine")
@@ -101,7 +101,7 @@ def get_fixed_routines_user_command(user_id):
 app.cli.add_command(workout_cli)
 
 
-#####################################################
+#till here////////////////////////////
 '''
 User Commands
 '''
