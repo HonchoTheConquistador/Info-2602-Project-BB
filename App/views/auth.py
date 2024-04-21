@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, jsonify, request, flash, send_from_directory, flash, redirect, url_for
 from flask_jwt_extended import jwt_required, current_user, unset_jwt_cookies, set_access_cookies
-
+import sqlalchemy.exc
+from sqlalchemy.exc import IntegrityError
 from.index import index_views
 
 from App.controllers import (
@@ -32,20 +33,21 @@ def signup_page():
 
 @auth_views.route("/signup", methods=['POST'])
 def signup_action():
+    data = request.form
     response = None
     try:
-        username = request.form['username']
-        password = request.form['password']
-        user = User(username=username, password=password)
-        db.session.add(user)
-        db.session.commit()
+        username = data['username']
+        password = data['password']
+        workoutLevel = data['workoutLevel']
+        user = create_user(username,password,workoutLevel)
         response = redirect(url_for('homepage_views.homepage'))
         token = create_access_token(identity=user)
         set_access_cookies(response, token)
+        flash('Account created')
     except IntegrityError:
         flash('Username already exists')
         response = redirect(url_for('signup_page'))
-    flash('Account created')
+    
     return response
 
 
