@@ -52,7 +52,7 @@ def create_app(overrides={}):
 #             flash("Invalid username or password")
 #             return redirect(url_for('index'))
 
-#    return app
+    return app
  
 
 if __name__ == "__main__":

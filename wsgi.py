@@ -15,7 +15,6 @@ from App.models.routineworkouts import RoutineWorkouts
 
 app = create_app()
 migrate = get_migrate(app)
-    
 
 # This command creates and initializes the database
 @app.cli.command("init", help="Creates and initializes the database")
@@ -56,7 +55,36 @@ def initialize():
     #Add test data here using controllers 
     print('database intialized')
 
+#here///////////////////////////////////
+workout_cli = AppGroup('workout', help='Workout management commands')
 
+@workout_cli.command("add", help="Add a workout to a routine")
+@click.argument("workout_id", type=int)
+@click.argument("routine_id", type=int)
+@click.argument("user_id", type=int)
+def add_workout_user_command(workout_id, routine_id, user_id):
+    add_entry_routines(user_id, routine_id)
+    print(f"Workout {workout_id} added to routine {routine_id}")
+
+@workout_cli.command("delete", help="Delete a workout from a routine")
+@click.argument("workout_id", type=int)
+@click.argument("routine_id", type=int)
+@click.argument("user_id", type=int)
+def delete_workout_user_command(workout_id, routine_id, user_id):
+    delete_entry_routines(user_id, routine_id)
+    print(f"Workout {workout_id} deleted from routine {routine_id}")
+
+@app.cli.command("get_fixed_routines", help="Get fixed routines based on user's selected difficulty")
+@click.argument("user_id", type=int)
+def get_fixed_routines_user_command(user_id):
+    fixed_routines = get_routine_by_difficulty(user_id)
+    for routine in fixed_routines:
+        print(routine.get_json())
+
+app.cli.add_command(workout_cli)
+
+
+#till here////////////////////////////
 '''
 User Commands
 '''

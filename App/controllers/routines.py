@@ -35,10 +35,11 @@ def get_routine_by_difficulty(difficulty): #gets routine by difficulty for fixed
 
 def add_custom_routine(userID,routineName): # Adds a custom routine
     today = date.today()
-    date = today.strftime("%d/%m/%Y")
+    dateToday = today.strftime("%d/%m/%Y")
     try:
-        customRoutine = CustomRoutine(userID, routineName, 0, date) #difficulty is 0 as routine starts out empty
+        customRoutine = CustomRoutine(userID, routineName, 0, dateToday) #difficulty is 0 as routine starts out empty
         db.session.add(customRoutine)
+        db.session.commit()
     except:
         db.session.rollback()
         return "Error adding custom routine"

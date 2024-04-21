@@ -5,7 +5,7 @@ class Routines(db.Model):
     routineName = db.Column(db.String(120), nullable=False)
     difficulty = db.Column(db.Float, nullable=False)
     dateCreated = db.Column(db.String(50), nullable=False)
-    type = db.Column(db.String(50))
+    type = db.Column(db.String(50),nullable=False)
     __mapper_args__ = {
       'polymorphic_identity': 'routines',
       'polymorphic_on': type
