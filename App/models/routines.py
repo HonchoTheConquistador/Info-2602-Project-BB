@@ -47,7 +47,7 @@ class CustomRoutine(Routines):
 
 class FixedRoutine(Routines):
   __tablename__ = 'fixed_routines'
-  db.Column(db.String(50),nullable=False)
+  routineType = db.Column(db.String(50),nullable=False)
   __mapper_args__ = {
       'polymorphic_identity': 'fixedRoutine',
   }
