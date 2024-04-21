@@ -105,8 +105,7 @@ def add_fixed_routine_to_user():
 #     custom_routines = get_all_custom_routines(user_id)
 #     return render_template('custom_routines.html', custom_routines)
 
-@userprofile_views.route('api/customRoutine', methods=['GET'])
+@userprofile_views.route('/api/customRoutine', methods=['GET'])
 def custRoutine_endpt():
-    data = request.json()
-    routines = get_all_custom_routines_jso(data['userId'])
+    routines = get_all_custom_routines_json(1)
     return jsonify(routines)
