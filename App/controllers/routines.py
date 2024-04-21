@@ -79,8 +79,8 @@ def find_fixed_routine_by_name(name):
         return routine
     return None 
 
-def find_fixed_routine_by_id(id):
-    routine = FixedRoutine.query.filter_by(routineId=id).first()
+def find_fixed_routine_by_id(routineId):
+    routine = FixedRoutine.query.filter_by(routineId=routineId).first()
     if routine:
         return routine
     return None 

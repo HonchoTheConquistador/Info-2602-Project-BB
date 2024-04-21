@@ -29,18 +29,27 @@
             flex-direction: column;
             align-items: center;
             padding: 20px;
-            box-shadow: -2px 0 5px rgba(0,0,0,0.1); /* Shadow on the left side */
+            box-shadow: -2px 0 5px rgba(0,0,0,0.1);
         }
         .user-image {
             width: 150px;
             height: 150px;
-            background: url('https://via.placeholder.com/150');
+            background: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSURZnAAwh5juxEpQmESwpiMEpDUttmMLUhyp9YJnaNIQ&s') no-repeat center center;
+            background-size: cover;
             border-radius: 50%;
             margin-bottom: 20px;
+            border: 3px solid white;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease;
+        }
+        .user-image:hover {
+            transform: scale(1.05);
+            cursor: pointer;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.5);
         }
         .main-content {
             flex-grow: 1;
-            padding-right: 20px; /* Add padding to the right of the main content */
+            padding-right: 20px;
         }
         .routine {
             margin: 10px 0;
@@ -61,30 +70,32 @@
 </head>
 <body>
     <nav class="navbar">
-        <a href="{{ url_for('auth_views.homepage') }}" class="left">Go Back</a>
+        <a href="{{ url_for('homepage_views.homepage') }}" class="left">Go Back</a>
         <div class="center">User Profile</div>
     </nav>
     <div class="container">
         <div class="main-content">
             <h4>Fixed Routines</h4>
-            {% for routine in fixedRoutines%}
-                <div class="routine">{{routine.routineName}}</div>
-            {% endfor %}
+        {% for routine in fixedRoutines %}
+            <div class="routine">
+            <a href="/routine/{{ routine.id }}">
+            {{ routine.routineName }}
+             </a>
+            </div>
+        {% endfor %}
 
             <h4>Custom Routines</h4>
             {% for routine in customRoutines %}
-                <div class="routine">{{routine.routineName}}<i class="material-icons">Edit</i><i class="material-icons">Delete</i></div>
+                <div class="routine">{{routine.routineName}}<i class="material-icons">edit</i><i class="material-icons">delete</i></div>
             {% endfor %}
-            <a href=""></a>
             <button class="btn waves-effect waves-light">Create New Routine</button>
         </div>
         <div class="right-panel">
             <div class="user-image"></div>
             <div>User: {{ user.username }}</div>
-            <div>Email: {{ user.email }}</div> <!-- Assuming email is available -->
+            <div>Email: {{ user.email }}</div>
         </div>
     </div>
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <script>M.AutoInit();</script>
 </body>

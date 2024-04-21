@@ -43,21 +43,26 @@
             color: white;
         }
         .user-icon {
+            display: inline-flex; /* Use flex to center the icon inside the circle */
+            align-items: center;
+            justify-content: center;
             background-color: #ee6e73; /* Red color background for highlight */
             border-radius: 50%; /* Makes it round */
-            padding: 5px; /* Adds some spacing inside the circle */
+            padding: 10px; /* Adjust padding to scale the circle size */
             box-shadow: 0 4px 8px rgba(0,0,0,0.3); /* Adds a subtle shadow */
-            transition: transform 0.3s ease-in-out; /* Smooth transformation on hover */
+            transition: transform 0.3s ease-in-out, background-color 0.3s; /* Smooth transformation on hover */
+            cursor: pointer; /* Indicates it's clickable */
+            margin-right: 10px; /* Spacing from the next element */
         }
 
         .user-icon i {
-            color: white; /* White color icon */
-            font-size: 24px; /* Larger font size for visibility */
+            color: white; /* White color for the icon */
+            font-size: 30px; /* Adjust size to make the icon visible and clear */
         }
 
         .user-icon:hover {
             transform: scale(1.1); /* Scales up the icon on hover */
-            cursor: pointer; /* Changes cursor to pointer to indicate it's clickable */
+            background-color: #f06292; /* Lighter red for hover */
         }
         .container {
             display: flex;
@@ -137,10 +142,10 @@
         <a href="{{ url_for('auth_views.logout_action') }}" class="logout-button">Logout</a>
         <a href="#!" class="brand-logo logo-center">Home Page</a>
         <div class="user-info">
-            <div class="user-icon">
+            <a href="/userprofile" class="user-icon">
                 <i class="material-icons">account_circle</i>
-            </div>
-            <a href="/userprofile">{{ current_user.username }}</a> 
+            </a>
+            <a href="/userprofile" style="font-weight: bold; margin-left: 5px;">{{ current_user.username }}</a> 
         </div>
     </nav>
     <div class="search-bar-container">

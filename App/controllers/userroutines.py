@@ -30,13 +30,13 @@ def get_user_routines(user_id): # gets all routines associated with the user, in
     
 def add_entry_routines(user_id, routine_id):
     try:
-        user_routine = UserRoutines(userId=user_id, routineId=routine_id)
+        user_routine = UserRoutines(userID=user_id, routineId=routine_id)
         db.session.add(user_routine)
         db.session.commit()
-        return {"success": True, "message": "Entry added to user routines successfully"}
+        return 
     except Exception as e:
         db.session.rollback()
-        return {"success": False, "message": str(e)}
+        return 
 
 def delete_entry_routines(user_id, routine_id):
     user_routine = UserRoutines.query.filter_by(userID=user_id, routineId=routine_id).first()

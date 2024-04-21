@@ -28,10 +28,7 @@ def identify_page():
 def signup_page():
     return render_template('signup.html', title="Sign Up") 
 
-@auth_views.route('/homepage')
-def homepage():
-    fixed_routines = get_all_fixed_routines_json() 
-    return render_template('homepage.html', title="Home Page", fixed_routines=fixed_routines)
+
 
 @auth_views.route('/login', methods=['GET'])
 def login_page():
@@ -46,7 +43,7 @@ def login_action():
         return redirect(url_for('auth_views.login'))  
     else:
         flash('Login Successful')
-        response = redirect(url_for('auth_views.homepage'))  
+        response = redirect(url_for('homepage_views.homepage'))  
         set_access_cookies(response, token)
         return response
     
@@ -59,16 +56,11 @@ def logout_action():
     
 @auth_views.route('/routine/<int:routine_id>')
 def routine_details(routine_id):
-    routine = get_routine_by_id(routine_id)  # Make sure this function correctly fetches the routine
+    routine = get_routine_by_id(routine_id)  
     if not routine:
         return "Routine not found", 404  
     return render_template('routine_details.html', routine=routine)
 
-
-@auth_views.route('/userprofile', methods=['GET'])
-@jwt_required()  # Requires user to be logged in to view the profile
-def user_profile():
-     return render_template('userprofile.html', user=current_user)
 
 '''
 API Routes

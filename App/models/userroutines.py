@@ -5,8 +5,8 @@ class UserRoutines(db.Model):
     userID = db.Column(db.Integer, db.ForeignKey('user.id'),nullable=False)
     routineId = db.Column(db.Integer, db.ForeignKey('routines.routineId'),nullable=False)
     
-    def __init__(self, userId,routineId):
-        self.userID = userId
+    def __init__(self, userID,routineId):
+        self.userID = userID
         self.routineId = routineId
     
     def get_json():

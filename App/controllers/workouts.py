@@ -5,6 +5,12 @@ from App.models.workouts import Workouts
 def get_all_workouts():
     workout_list = Workouts.query.all()
     if not workout_list:
+        return None
+    return workout_list
+
+def get_all_workouts_json():
+    workout_list = Workouts.query.all()
+    if not workout_list:
         return []
     return [workout.get_json() for workout in workout_list]
 

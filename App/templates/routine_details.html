@@ -1,0 +1,59 @@
+<!doctype html>
+<html>
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>{{ routine.routineName }}</title>
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+        }
+        .navbar {
+            background: #2196f3; /* Blue theme */
+            padding: 0 20px;
+            color: white;
+        }
+        .info-box, .workout-box {
+            margin: 20px;
+            padding: 20px;
+            border: 1px solid #ddd; /* Light grey border */
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Subtle shadow */
+        }
+        .info-box {
+            background-color: #f9f9f9; /* Light grey background */
+        }
+        .workout-box {
+            background-color: #fff; /* White background */
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div>{{ routine.routineName }}</div>
+    </nav>
+    <div class="container">
+        <div class="info-box">
+            <h4>Routine Information</h4>
+            <p><strong>Type:</strong> {{ routine.type }}</p>
+            <p><strong>Description:</strong> {{ routine.description }}</p>
+            <p><strong>Duration:</strong> {{ routine.duration }} minutes</p>
+        </div>
+        <h4>Workouts</h4>
+        {% for workout in routine.workouts %}
+        <div class="workout-box">
+            <h5>{{ workout.name }}</h5>
+            <p>{{ workout.description }}</p>
+            <p><strong>Duration:</strong> {{ workout.duration }} minutes</p>
+        </div>
+        {% endfor %}
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script>M.AutoInit();</script>
+</body>
+</html>
