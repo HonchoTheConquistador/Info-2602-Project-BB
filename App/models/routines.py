@@ -26,7 +26,7 @@ class Routines(db.Model):
 
 class CustomRoutine(Routines):
   __tablename__ = 'custom_routines'
-  userId = db.Column(db.Integer,nullable=False)
+  userId = db.Column(db.Integer)
   __mapper_args__ = {
     'polymorphic_identity': 'customRoutine',
   }

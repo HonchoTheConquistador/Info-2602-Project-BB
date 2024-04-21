@@ -43,7 +43,7 @@ def add_custom_routine(userID,routineName): # Adds a custom routine
     except:
         db.session.rollback()
         return "Error adding custom routine"
-    db.session.commit()
+    
     return
 
 def delete_custom_routine(routineID): # Deletes a custom routine
@@ -62,3 +62,5 @@ def edit_custom_routine(routineID,name): # Edits the name of a custom routine
         db.session.commit()
     return
 
+def make_fixed_routine(): #adds a fixed routine entry
+    pass

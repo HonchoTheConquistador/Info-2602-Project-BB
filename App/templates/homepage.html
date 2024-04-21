@@ -1,23 +1,134 @@
-{% extends "layout.html" %}
-{% block title %}Home Page{% endblock %}
-{% block page %}Home Page{% endblock %}
+<!doctype html>
+<html>
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Home Page</title>
+    <style>
+        body, html {
+            height: auto;
+            margin: 0;
+            overflow-y: auto;
+        }
+        nav {
+            position: relative;
+            z-index: 10;
+        }
+        .nav-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+        }
+        .search-bar {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 500px;
+        }
+        .search-bar input {
+            width: 100%;
+        }
+        .brand-logo {
+            padding-left: 10px;
+        }
+        .user-icon {
+            margin-left: auto;
+        }
+        .container {
+            width: 100%;
+            margin: auto;
+            display: flex;
+        }
+        .left-sidebar {
+            width: 40%; /* Adjusted to better align with two cards per line */
+            padding-right: 20px;
+            overflow-y: auto; /* Enables vertical scrolling */
+            max-height: 800px; /* Maximum height before scrolling */
+        }
+        .main-content {
+            width: 80%; /* Adjust the main content area width */
+        }
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+        }
+        .col {
+            width: 50%; /* Sidebar columns are 50% to fit two cards in one row */
+        }
+        .main-col {
+            width: 25%; /* Main content columns are 25% to fit four cards in one row */
+        }
+        .card {
+            margin: 10px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="red">
+        <div class="nav-wrapper">
+            <a href="#!" class="brand-logo">Home Page</a>
+            <div class="search-bar">
+                <input type="text" placeholder="Search..." id="search">
+            </div>
+            <div class="user-icon">
+                <i class="material-icons">account_circle</i>
+            </div>
+        </div>
+    </nav>
 
+    <div class="container">
+        <div class="left-sidebar">
+            <h2>Sidebar Content</h2>
+            <p>Scrollable sidebar with two cards per row:</p>
+            <div class="row">
+                {% for i in range(8) %}
+                <div class="col"> <!-- Adjusted to two cards per line -->
+                    <div class="card">
+                        <div class="card-image">
+                            <img src="https://via.placeholder.com/400x200">
+                            <span class="card-title">Card S{{ i+1 }}</span>
+                        </div>
+                        <div class="card-content">
+                            <p>This is sidebar card number {{ i+1 }}. Additional content here.</p>
+                        </div>
+                        <div class="card-action">
+                            <a href="#">More Info</a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="main-content">
+            <h1>Activity Type/ Muscle Group</h1>
+            <p>This page demonstrates a dynamic generation of cards with four cards per row.</p>
+            <div class="row">
+                {% for i in range(20) %}
+                <div class="main-col"> <!-- Adjusted to four cards per line -->
+                    <div class="card">
+                        <div class="card-image">
+                            <img src="https://via.placeholder.com/400x200">
+                            <span class="card-title">Card {{ i+1 }}</span>
+                        </div>
+                        <div class="card-content">
+                            <p>This is sample card number {{ i+1 }}. You can put any information here.</p>
+                        </div>
+                        <div class="card-action">
+                            <a href="#">This is a link</a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
 
-{{ super() }}
-
-{% block content %}
-      <head>
-      <title>Home</title>
-      <link rel ="stylesheet" href ="style.css">
-      </head>
-      <body>
-            <header>
-                  <div class = "main">
-                        <ul>
-                              <li><a href ="#">SearchBar</a></li>
-                              <li><a href ="#">UserProfile</a></li>
-                        </ul>
-                  </div>
-            </header>
-      </body>
-{% endblock %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script>
+        M.AutoInit();
+    </script>
+</body>
+</html>

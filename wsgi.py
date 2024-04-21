@@ -7,6 +7,7 @@ from App.database import db, get_migrate
 from App.main import create_app
 from App.controllers import (create_user, get_all_users_json, get_all_users, get_workout_difficulty, get_all_workouts, get_workout_equipment, get_workout_body_part, get_workout_type, search_workouts, get_workout_id )
 from App.controllers import (get_all_fixed_routines, get_user_routines, add_entry_routines, delete_entry_routines)
+from App.controllers import (get_all_routine_workouts, add_routine_workout, delete_routine_workout, delete_routine_workouts)
 from App.models.workouts import Workouts
 from App.models.routines import Routines, FixedRoutine
 from App.models.routineworkouts import RoutineWorkouts
@@ -223,3 +224,33 @@ def delete_entry_command():
     sys.exit(pytest.main(["-k", "TestDeleteEntryRoutines"]))
 
 app.cli.add_command(userroutine_tests)
+########################################## routineworkouts.py
+routineworkouts_cli = AppGroup('routineworkouts', help='Routine workouts management commands')
+
+@routineworkouts_cli.command("get_all", help="Get all routine workouts")
+def get_all_routine_workouts_command():
+    routine_workouts = get_all_routine_workouts()
+    for routine_workout in routine_workouts:
+        print(routine_workout)
+
+@routineworkouts_cli.command("add", help="Add a workout to a routine")
+@click.argument("routine_id", type=int)
+@click.argument("workout_id", type=int)
+def add_routine_workout_command(routine_id, workout_id):
+    add_routine_workout(routine_id, workout_id)
+    print(f"Workout {workout_id} added to routine {routine_id}")
+
+@routineworkouts_cli.command("delete", help="Delete a workout from a routine")
+@click.argument("routine_id", type=int)
+@click.argument("workout_id", type=int)
+def delete_routine_workout_command(routine_id, workout_id):
+    delete_routine_workout(routine_id, workout_id)
+    print(f"Workout {workout_id} deleted from routine {routine_id}")
+
+@routineworkouts_cli.command("delete_all", help="Delete all workouts from a routine")
+@click.argument("routine_id", type=int)
+def delete_all_routine_workouts_command(routine_id):
+    delete_routine_workouts(routine_id)
+    print(f"All workouts deleted from routine {routine_id}")
+
+app.cli.add_command(routineworkouts_cli)
