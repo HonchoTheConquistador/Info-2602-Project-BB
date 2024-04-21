@@ -14,7 +14,6 @@ from App.controllers import (
     delete_custom_routine,
     edit_custom_routine,
     make_fixed_routine,
-    find_fixed_routine
 )
 
 homepage_views = Blueprint('homepage_views', __name__, template_folder='../templates')
@@ -42,7 +41,7 @@ def create_user_endpoint():
     user = create_user(data['username'], data['password'])
     return jsonify({'message': f"user {user.username} created with id {user.id}"})
 
-@homepage_views.route('/redirect_to_userprofile', methods=['GET'])
-@jwt_required()
-def redirect_to_userprofile():
-    return redirect(url_for('userprofile_views.view_userprofile'))
+# @homepage_views.route('/redirect_to_userprofile', methods=['GET'])
+# @jwt_required()
+# def redirect_to_userprofile():
+#     return redirect(url_for('userprofile_views.view_userprofile'))

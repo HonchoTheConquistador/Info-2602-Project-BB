@@ -6,7 +6,7 @@ from.index import index_views
 from App.controllers import (
     login
 )
-from .controllers import get_all_fixed_routines_json
+from App.controllers import get_all_fixed_routines_json
 
 auth_views = Blueprint('auth_views', __name__, template_folder='../templates')
 
@@ -31,7 +31,7 @@ def signup_page():
 @auth_views.route('/homepage')
 def homepage():
     fixed_routines = get_all_fixed_routines_json() 
-    return render_template('homepage.html', title="Home Page", fixed_routines=fixed_routines
+    return render_template('homepage.html', title="Home Page", fixed_routines=fixed_routines)
 
 @auth_views.route('/login', methods=['GET'])
 def login_page():
@@ -65,10 +65,10 @@ def routine_details(routine_id):
     return render_template('routine_details.html', routine=routine)
 
 
-#@auth_views.route('/userprofile', methods=['GET'])
-#@jwt_required()  # Requires user to be logged in to view the profile
-#def user_profile():
-#     return render_template('userprofile.html', user=current_user)
+@auth_views.route('/userprofile', methods=['GET'])
+@jwt_required()  # Requires user to be logged in to view the profile
+def user_profile():
+     return render_template('userprofile.html', user=current_user)
 
 '''
 API Routes

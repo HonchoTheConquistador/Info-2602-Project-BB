@@ -73,8 +73,14 @@ def make_fixed_routine(routineType,name,routineDifficulty,dateCreated): #adds a 
         db.session.commit()
     return
 
-def find_fixed_routine(name):
+def find_fixed_routine_by_name(name):
     routine = FixedRoutine.query.filter_by(routineName=name).first()
+    if routine:
+        return routine
+    return None 
+
+def find_fixed_routine_by_id(id):
+    routine = FixedRoutine.query.filter_by(routineId=id).first()
     if routine:
         return routine
     return None 

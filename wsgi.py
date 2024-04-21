@@ -55,10 +55,24 @@ def initialize():
     db.session.commit()
     create_user('bob', 'bobpass',1)
     add_entry_routines(1, 1)
+    add_entry_routines(1,2)
+    delete_entry_routines(1,2)
+    add_routine_workout(1,1)
+    add_routine_workout(1,3)
+    add_routine_workout(1,4) 
+    delete_routine_workout(1,3)
+    add_custom_routine(1,test)
+    edit_custom_routine(1,testing)
+    get_routine_for_user(testing,1)
+    add_routine_workout(2,3)
+    add_routine_workout(2,6)
+    add_routine_workout(2,7)
+    add_routine_workout(2,8)
+    delete_routine_workout(2,6)
     #Add test data here using controllers 
     print('database intialized')
 
-#here///////////////////////////////////
+####################################### workouts.py
 workout_cli = AppGroup('workout', help='Workout management commands')
 
 @workout_cli.command("add", help="Add a workout to a routine")
@@ -87,7 +101,7 @@ def get_fixed_routines_user_command(user_id):
 app.cli.add_command(workout_cli)
 
 
-#till here////////////////////////////
+#####################################################
 '''
 User Commands
 '''

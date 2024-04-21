@@ -15,31 +15,27 @@ from App.controllers import (
     get_user_routines,
     edit_custom_routine,
     make_fixed_routine,
-    find_fixed_routine,
     add_entry_routines,
-    get_routine_for_user
+    get_routine_for_user,
+    find_fixed_routine_by_id
 )
 
 userprofile_views = Blueprint('userprofile_views', __name__, template_folder='../templates')
-
-# @userprofile_views.route('/userprofile', methods=['GET'])
-# @jwt_required() # Requires user to be logged in to view the profile
-# def view_userprofile():
-#     userId = jwt_current_user.id
-#     customRoutines = get_all_custom_routines(userId)
-#     userFixedRoutines = []
-#     userR = get_user_routines(userId) 
-#     userFixedRoutines = []
-#     return render_template('userprofile.html',user=jwt_current_user,fixedRoutines=userFixedRoutines,customRoutines=customRoutines)  
 
 @userprofile_views.route('/userprofile', methods=['GET'])
 @jwt_required() # Requires user to be logged in to view the profile
 def view_userprofile():
     user_id = jwt_current_user.id
     custom_routines = get_all_custom_routines(user_id)
-    fixed_routines = get_all_fixed_routines()
     user_routines = get_user_routines(user_id)
-    return render_template('userprofile.html',user=jwt_current_user,custom_routines=custom_routines,fixed_routines=fixed_routines,user_routines=user_routines)
+    fixed_routines = get_all_fixed_routines()
+    user_fixed_routines = []
+    for j in user_routines:
+        obj = find_fixed_routine_by_id(j.routineId)
+        if obj:
+            user_fixed_routines.append(obj)
+    
+    return render_template('userprofile.html',user=jwt_current_user,custom_routines=custom_routines,fixed_routines=user_fixed_routines,user_routines=user_routines)
 
 @userprofile_views.route('/edit_custom_routine/<int:routine_id>', methods=['GET', 'POST'])
 @jwt_required()
@@ -71,7 +67,26 @@ def create_custom_routine():
     add_custom_routine(jwt_current_user.id, routine_name)
     flash(f"Custom routine {routine_name} created!")
     return redirect(url_for('userprofile_views.view_userprofile'))
-    
+
+@userprofile_views.route('/add_fixed_routine', methods=['POST'])
+@jwt_required() 
+def add_fixed_routine_to_user():
+    user_id = jwt_current_user.id
+    routine_id = request.form['routine_id']
+    add_entry_routines(user_id, routine_id)
+    remove_fixed_routine(routine_id)
+    return redirect(url_for('userprofile_views.view_userprofile'))
+
+# @userprofile_views.route('/userprofile', methods=['GET'])
+# @jwt_required() # Requires user to be logged in to view the profile
+# def view_userprofile():
+#     userId = jwt_current_user.id
+#     customRoutines = get_all_custom_routines(userId)
+#     userFixedRoutines = []
+#     userR = get_user_routines(userId) 
+#     userFixedRoutines = []
+#     return render_template('userprofile.html',user=jwt_current_user,fixedRoutines=userFixedRoutines,customRoutines=customRoutines)  
+
 # @userprofile_views.route('/addCustomRoutine', methods=["POST"])
 # # @jwt_required()
 # def add_custom_routine_userprofile():
