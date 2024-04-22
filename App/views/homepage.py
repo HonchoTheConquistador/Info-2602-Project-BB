@@ -5,28 +5,18 @@ from.index import index_views
 
 from App.controllers import (
     create_user,
-    get_all_users,
-    get_all_users_json,
     jwt_required,
-    get_all_fixed_routines,
-    get_all_fixed_routines_json,
-    get_all_custom_routines,
-    add_custom_routine,
-    delete_custom_routine,
-    edit_custom_routine,
-    make_fixed_routine,
     get_all_workouts_json,
     get_all_workouts,
-    add_entry_routines
+    add_user_routines
 )
 
 homepage_views = Blueprint('homepage_views', __name__, template_folder='../templates')
 
 @homepage_views.route('/homepage')
-def homepage():
-    fixed_routines = get_all_fixed_routines_json() 
+def homepage(): 
     workouts = get_all_workouts()
-    return render_template('homepage.html', title="Home Page", fixed_routines=fixed_routines, workouts=workouts)
+    return render_template('homepage.html', title="Home Page",workouts=workouts)
 
 @homepage_views.route('/users', methods=['GET'])
 def get_user_page():
@@ -51,11 +41,11 @@ def create_user_endpoint():
     user = create_user(data['username'], data['password'])
     return jsonify({'message': f"user {user.username} created with id {user.id}"})
 
-@homepage_views.route('/api/addfixedroutine', methods=['POST'])
-def add_fixed_routine_to_user_endpoint():
-    data = request.json
-    user = add_entry_routines(data['userId'], data['routineId'])
-    return jsonify({'message': f"user {data['userId']} has routine {user.routineId}"})
+# @homepage_views.route('/api/addfixedroutine', methods=['POST'])
+# def add_fixed_routine_to_user_endpoint():
+#     data = request.json
+#     user = add_entry_routines(data['userId'], data['routineId'])
+#     return jsonify({'message': f"user {data['userId']} has routine {user.routineId}"})
 
 
 @homepage_views.route('/api/getAllWorkouts', methods=['GET'])

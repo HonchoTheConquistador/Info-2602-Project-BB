@@ -39,26 +39,6 @@ class CustomRoutine(Routines):
       return {
         "routineId" : self.routineId,
         "userId" : self.userId,
-        "routineType": self.routineType,
-        "routineName" : self.routineName,
-        "difficulty" : self.difficulty,
-        "dateCreated" : self.dateCreated
-      }
-
-class FixedRoutine(Routines):
-  __tablename__ = 'fixed_routines'
-  routineType = db.Column(db.String(50),nullable=False)
-  __mapper_args__ = {
-      'polymorphic_identity': 'fixedRoutine',
-  }
-  def __init__(self, routineType, name, difficulty, dateCreated):
-    super().__init__(name,difficulty,dateCreated)
-    self.routineType = routineType
-
-  def get_json(self):
-      return {
-        "routineId" : self.routineId,
-        "routineType": self.routineType,
         "routineName" : self.routineName,
         "difficulty" : self.difficulty,
         "dateCreated" : self.dateCreated

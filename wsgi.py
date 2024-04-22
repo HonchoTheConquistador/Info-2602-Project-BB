@@ -6,11 +6,11 @@ from flask.cli import with_appcontext, AppGroup
 from App.database import db, get_migrate
 from App.main import create_app
 from App.controllers import (create_user, get_all_users_json, get_all_users, get_workout_difficulty, get_all_workouts, get_workout_equipment, get_workout_body_part, get_workout_type, search_workouts, get_workout_id )
-from App.controllers import (get_all_fixed_routines, get_user_routines, add_entry_routines, delete_entry_routines)
-from App.controllers import (get_all_routine_workouts, add_routine_workout, delete_routine_workout, delete_routine_workouts,make_fixed_routine,find_fixed_routine_by_name)
-from App.controllers import (add_custom_routine,edit_custom_routine,delete_custom_routine,get_routine_for_user,get_workout_types)
+from App.controllers import (get_all_custom_routines, add_user_routines, delete_user_routines)
+from App.controllers import (get_all_routine_workouts, add_routine_workout, delete_routine_workout, delete_routine_workouts)
+from App.controllers import (add_custom_routine,edit_custom_routine,delete_custom_routine,get_custom_routine_for_user,get_workout_types,get_custom_routine_by_name)
 from App.models.workouts import Workouts
-from App.models.routines import Routines, FixedRoutine
+from App.models.routines import Routines, CustomRoutine
 from App.models.routineworkouts import RoutineWorkouts
 
 # This commands file allow you to create convenient CLI commands for testing controllers
@@ -39,9 +39,9 @@ def initialize():
             routineType = row["RoutineType"]
             dateCreated = row["DateCreated"]
             workoutslist = row["Workouts"].split(",")
-            make_fixed_routine(routineType,name,routineDifficulty,dateCreated)
-            routine = find_fixed_routine_by_name(name) 
-            # not sure if i have to commit it to the db first, will test 
+            add_custom_routine(1,name)
+            routine = get_custom_routine_by_name(name) 
+    #         # not sure if i have to commit it to the db first, will test 
             if routine:
                 for i in workoutslist:
                     workout = Workouts.query.filter_by(workoutID =int(i)).first()
@@ -55,23 +55,6 @@ def initialize():
 
     db.session.commit()
     create_user('bob', 'bobpass',1)
-    add_entry_routines(1, 1)
-    add_entry_routines(1,2)
-    add_entry_routines(1,7)
-    add_entry_routines(1,5)
-    delete_entry_routines(1,2)
-    add_routine_workout(1,1)
-    add_routine_workout(1,3)
-    add_routine_workout(1,4) 
-    delete_routine_workout(1,3)
-    add_custom_routine(1,"test")
-    edit_custom_routine(1,"testing")
-    get_routine_for_user("testing",1)
-    add_routine_workout(2,3)
-    add_routine_workout(2,6)
-    add_routine_workout(2,7)
-    add_routine_workout(2,8)
-    delete_routine_workout(2,6)
     #Add test data here using controllers 
     print('database intialized')
 

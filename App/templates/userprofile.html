@@ -50,6 +50,7 @@
         .main-content {
             flex-grow: 1;
             padding-right: 20px;
+            overflow-y: auto; /* Enables vertical scrolling */
         }
         .routine {
             margin: 10px 0;
@@ -66,38 +67,49 @@
         .btn {
             margin-top: 20px;
         }
+        .routine-actions {
+            display: flex;
+            align-items: center;
+        }
     </style>
 </head>
 <body>
     <nav class="navbar">
-        <a href="{{ url_for('homepage_views.homepage') }}" class="left">Go Back</a>
+        <a href="#" class="left">Go Back</a>
         <div class="center">User Profile</div>
     </nav>
     <div class="container">
         <div class="main-content">
-            <h4>Fixed Routines</h4>
-            {% for routine in fixedRoutines %}
+            <h4>Custom Routines</h4>
+            {% for routine in custom_routines %}
                 <div class="routine">
-                    <!-- This bypasses url_for and manually creates the path -->
-                    <a href="/auth/routine/{{routine.routineId}}">
-                        {{ routine.routineName }}
-                    </a>
+                    <span>{{ routine.routineName }}</span>
+                    <div class="routine-actions">
+                        <a href="javascript:void(0);" onclick="alert('Edit routine: {{ routine.routineName }}');"><i class="material-icons">edit</i></a>
+                        <a href="javascript:void(0);" onclick="alert('Delete routine: {{ routine.routineName }}');" class="material-icons">delete</a>
+                    </div>
                 </div>
             {% endfor %}
-            <h4>Custom Routines</h4>
-            {% for routine in customRoutines %}
-                <div class="routine">{{routine.routineName}}<i class="material-icons">edit</i><i class="material-icons">delete</i></div>
-            {% endfor %}
-            <button class="btn waves-effect waves-light">Create New Routine</button>
-            
         </div>
         <div class="right-panel">
             <div class="user-image"></div>
             <div>User: {{ user.username }}</div>
             <div>Email: {{ user.email }}</div>
+            <div>
+               <h5>Create New Routine</h5>
+            <form action="{{ url_for('userprofile_views.create_custom_routine') }}" method="POST" class="routine-form">
+            <div class="input-field">
+            <input id="routine_name" name="routine_name" type="text" class="validate" required>
+            <label for="routine_name">Routine Name</label>
+            </div>
+        <button type="submit" class="btn waves-effect waves-light">Create Routine</button>
+            </form>
+            </div>
         </div>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <script>M.AutoInit();</script>
 </body>
 </html>
+
+

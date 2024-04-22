@@ -1,56 +1,42 @@
-from flask import Blueprint, render_template, jsonify, request, flash, send_from_directory, flash, redirect, url_for
-from flask_jwt_extended import jwt_required, current_user, unset_jwt_cookies, set_access_cookies
-import sqlalchemy.exc
+from flask import Blueprint, render_template, jsonify, request, flash, redirect, url_for
+from flask_jwt_extended import jwt_required, current_user, unset_jwt_cookies, set_access_cookies, create_access_token
 from sqlalchemy.exc import IntegrityError
-from.index import index_views
-
-from App.controllers import (
-    create_user,
-    login,
-    
-)
-from App.controllers import get_all_fixed_routines_json
+from App.models import User
+from App.controllers import create_user, login
 
 auth_views = Blueprint('auth_views', __name__, template_folder='../templates')
-
-
 '''
 Page/Action Routes
-'''    
-@auth_views.route('/users', methods=['GET'])
-def get_user_page():
-    users = get_all_users()
-    return render_template('users.html', users=users)
-
-@auth_views.route('/identify', methods=['GET'])
-@jwt_required()
-def identify_page():
-    return render_template('message.html', title="Identify", message=f"You are logged in as {current_user.id} - {current_user.username}")
-
-@auth_views.route("/signup", methods=['GET'])
+'''
+@auth_views.route('/signup', methods=['GET'])
 def signup_page():
     return render_template("signup.html")
 
-@auth_views.route("/signup", methods=['POST'])
+@auth_views.route('/signup', methods=['POST'])
 def signup_action():
     data = request.form
-    response = None
     try:
         username = data['username']
         password = data['password']
         workoutLevel = data['workoutLevel']
-        user = create_user(username,password,workoutLevel)
-        response = redirect(url_for('homepage_views.homepage'))
-        token = create_access_token(identity=user)
-        set_access_cookies(response, token)
-        flash('Account created')
+        
+        user, error_message = create_user(username, password, workoutLevel)
+        
+        if user:
+            token = create_access_token(identity=user.id)
+            response = redirect(url_for('homepage_views.homepage'))
+            set_access_cookies(response, token)
+            flash('Account created successfully', 'success')
+            return response, 201
+        else:
+            flash('Failed to create account: ' + error_message, 'error')
+            return redirect(url_for('auth_views.signup_page')), 400
     except IntegrityError:
-        flash('Username already exists')
-        response = redirect(url_for('signup_page'))
-    
-    return response
-
-
+        flash('Username already exists', 'error')
+        return redirect(url_for('auth_views.signup_page')), 400
+    except KeyError:
+        flash('Invalid request data', 'error')
+        return redirect(url_for('auth_views.signup_page')), 400
 
 @auth_views.route('/login', methods=['GET'])
 def login_page():
@@ -61,10 +47,10 @@ def login_action():
     data = request.form
     token = login(data['username'], data['password'])
     if not token:
-        flash('Bad username or password given'), 401
+        flash('Bad username or password given', 'error')  # Add 'error' category for flash message
         return redirect(url_for('auth_views.login'))  
     else:
-        flash('Login Successful')
+        flash('Login Successful', 'success')  # Add 'success' category for flash message
         response = redirect(url_for('homepage_views.homepage'))  
         set_access_cookies(response, token)
         return response
@@ -73,14 +59,12 @@ def login_action():
 def logout_action():
     response = redirect(url_for('auth_views.login_page'))  
     unset_jwt_cookies(response)  
-    flash("Logged Out!")
-    return response
-    
-
+    flash("Logged Out!", 'success')
 
 '''
 API Routes
 '''
+
 @auth_views.route('/api/login', methods=['POST'])
 def user_login_api():
   data = request.json
@@ -115,6 +99,5 @@ def signup_page_endpoint():
         
         return jsonify({"message": f"{newuser.username} was signed up"})
     else:
-        # Handle invalid credentials
         return jsonify({"message": f"Failure in was signed up"})
     

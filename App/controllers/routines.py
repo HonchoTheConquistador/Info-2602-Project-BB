@@ -1,31 +1,23 @@
-from App.models import Routines, FixedRoutine, CustomRoutine
+from App.models import CustomRoutine
 from App.database import db
 from datetime import date
 
 #finds a specified routine by name
-def get_routine(name):
-    return Routines.query.filter_by(routineName=name)
+def get_custom_routine_by_name(name):
+    return CustomRoutine.query.filter_by(routineName=name).first()
+
+
+def find_custom_routine_by_id(routineId):
+    routine = CustomRoutine.query.filter_by(routineId=routineId).first()
+    if routine:
+        return routine
+    return None 
 
 #finds a specified routine by name
-def get_routine_for_user(name,userID):
+def get_custom_routine_for_user(name,userID):
     return CustomRoutine.query.filter_by(routineName=name,userId=userID).first()
 
-#gets all fixed routines 
-def get_all_fixed_routines():
-    routines = FixedRoutine.query.all()
-    return routines
-
-def get_fixed_routine_by_id(routine_id):
-    return FixedRoutine.query.get(routine_id)
-
-def get_all_fixed_routines_json():
-    routines = FixedRoutine.query.all()
-    if not routines:
-        return []
-    routine_list = [routine.get_json() for routine in routines]
-    return routine_list
-
-#gets all custom routines 
+#gets all routines for a user
 def get_all_custom_routines(userID):
     routines = CustomRoutine.query.filter_by(userId=userID).all()
     return routines
@@ -37,8 +29,8 @@ def get_all_custom_routines_json(userID):
     routine_list = [routine.get_json() for routine in routines]
     return routine_list
 
-def get_routine_by_difficulty(difficulty): #gets routine by difficulty for fixed routines
-    return FixedRoutine.query.filter_by(difficulty=difficulty).all()
+
+
 
 def add_custom_routine(userID,routineName): # Adds a custom routine
     today = date.today()
@@ -51,7 +43,7 @@ def add_custom_routine(userID,routineName): # Adds a custom routine
         db.session.rollback()
         return "Error adding custom routine"
     
-    return
+    return customRoutine
 
 def delete_custom_routine(routineID): # Deletes a custom routine
     routine = CustomRoutine.query.filter_by(routineId = routineID).first()
@@ -69,21 +61,5 @@ def edit_custom_routine(routineID,name): # Edits the name of a custom routine
         db.session.commit()
     return
 
-def make_fixed_routine(routineType,name,routineDifficulty,dateCreated): #adds a fixed routine entry
-    routine = FixedRoutine(routineType,name,routineDifficulty,dateCreated)
-    if routine:
-        db.session.add(routine)
-        db.session.commit()
-    return
 
-def find_fixed_routine_by_name(name):
-    routine = FixedRoutine.query.filter_by(routineName=name).first()
-    if routine:
-        return routine
-    return None 
 
-def find_fixed_routine_by_id(routineId):
-    routine = FixedRoutine.query.filter_by(routineId=routineId).first()
-    if routine:
-        return routine
-    return None 
